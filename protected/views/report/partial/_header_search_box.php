@@ -1,0 +1,1 @@
+<?php echo CHtml::activeTelField($report,'search_id', array('class' => 'col-xs-10 col-sm-4','placeholder'=> $hint_text));

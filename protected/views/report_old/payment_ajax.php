@@ -1,0 +1,25 @@
+<?php $this->widget('yiiwheels.widgets.grid.WhGridView',array(
+	'fixedHeader' => true,
+        'responsiveTable' => true,
+        'type'=>TbHtml::GRID_TYPE_BORDERED,
+        'id'=>'payment-grid',
+	'dataProvider'=>$report->payment(),
+        'summaryText' => '<p class="text-info" align="left"> Payment Collected From  ' . $from_date . ' To ' . $to_date .  '</p>',
+	'columns'=>array(
+                array('name'=>'payment_type',
+                      'header'=>'Payment Type',
+                      'value'=>'$data["payment_type"]',
+                ),
+                array('name'=>'quantity',
+                      'header'=>'Count',
+                      'value'=>'number_format($data["quantity"],Yii::app()->shoppingCart->getDecimalPlace(), ".", ",")',
+                      'footer'=>number_format($report->paymentTotalQty(),Yii::app()->shoppingCart->getDecimalPlace(), ".", ",") ,
+                ),
+		array('name'=>'amount',
+                      'header'=>'Amount',
+                      'value'=>'number_format($data["amount"],Yii::app()->shoppingCart->getDecimalPlace(), ".", ",")',
+                      'footer'=>Yii::app()->settings->get('site', 'currencySymbol') . number_format($report->paymentTotalAmount(),Yii::app()->shoppingCart->getDecimalPlace(), ".", ","),
+                ),
+	),
+)); ?>
+    

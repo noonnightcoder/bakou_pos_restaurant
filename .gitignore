@@ -1,0 +1,10 @@
+/db/
+/assets/
+/protected/runtime/
+/protected/runtime/application.log
+/protected/config/main.php
+*.log
+/ximages
+/.idea/
+/.idea/workspace.xml
+/framework/

@@ -1,0 +1,27 @@
+<?php $this->widget('EExcelView',array(
+        'id'=>'user-log-summary-grid',
+        'fixedHeader' => true,
+        'responsiveTable' => true,
+        'type'=>TbHtml::GRID_TYPE_BORDERED,
+	'dataProvider'=>$report->UserLogSummary(),
+        'summaryText' =>'<p class="text-info" align="left">' . Yii::t('app','User Log') . Yii::t('app','From') . ':  ' . $from_date . '  ' . Yii::t('app','To') . ':  ' . $to_date . '</p>', 
+	'template'=>"{summary}\n{items}\n{exportbuttons}\n{pager}",
+        'columns'=>array(
+                'employee_id',
+		array('name'=>'fullname',
+                      'header'=>Yii::t('app','Full Name'),
+                      'value'=>'$data["fullname"]',
+                ),
+                array('name'=>'date_log',
+                      'header'=>Yii::t('app','Date Log'),
+                      'value' =>'$data["date_log"]',
+                ),
+                array('name'=>'nlog',
+                      'header'=>Yii::t('app','# Log'),
+                      'value' =>'number_format($data["nlog"],Yii::app()->shoppingCart->getDecimalPlace(), ".", ",")',
+                      'htmlOptions'=>array('style' => 'text-align: right;'),
+                      'headerHtmlOptions'=>array('style' => 'text-align: right;'),
+                ),
+	),
+)); ?>
+    
