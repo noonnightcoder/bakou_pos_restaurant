@@ -118,6 +118,7 @@ class SaleOrder extends CActiveRecord
                 WHERE sale_id=:sale_id
                 AND location_id=:location_id
                 AND status=:status
+                AND deleted_at is null
                 ORDER BY path,modified_date desc";
                 //ORDER BY IF(item_parent_id=0, item_id, item_parent_id), item_parent_id!=0, item_id DESC";
                 //ORDER BY path,modified_date desc";
@@ -256,10 +257,10 @@ class SaleOrder extends CActiveRecord
         return $id;
     }
 
-    public function delOrderItem($item_id, $item_parent_id, $table_id, $group_id, $location_id)
+    public function delOrderItem($item_id, $item_parent_id, $table_id, $group_id)
     {
         //$sql = "CALL proc_del_item_cart(:item_id,:item_parent_id,:desk_id,:group_id,:location_id)";
-        $sql = "SELECT func_order_del(:item_id,:item_parent_id,:desk_id,:group_id, :location_id) result_id";
+        $sql = "SELECT func_order_del(:item_id,:item_parent_id,:desk_id,:group_id, :location_id, :employee_id) result_id";
 
         $result = Yii::app()->db->createCommand($sql)->queryAll(true,
             array(
@@ -267,7 +268,8 @@ class SaleOrder extends CActiveRecord
                 ':item_parent_id' => $item_parent_id,
                 ':desk_id' => $table_id,
                 ':group_id' => $group_id,
-                ':location_id' => $location_id
+                ':location_id' => Common::getCurLocationID(),
+                ':employee_id' => Common::getEmployeeID()
             )
         );
 
@@ -278,10 +280,10 @@ class SaleOrder extends CActiveRecord
         return $result_id;
     }
 
-    public function editOrderMenu($sale_id, $item_id, $quantity, $price, $discount, $item_parent_id, $location_id)
+    public function editOrderMenu($sale_id, $item_id, $quantity, $price, $discount, $item_parent_id)
     {
         //$sql = "CALL proc_edit_menu_order(:desk_id,:group_id,:item_id,:quantity,:price,:discount,:item_parent_id,:location_id)";
-        $sql = "SELECT func_order_edit(:sale_id,:item_id,:quantity,:price,:discount,:item_parent_id,:location_id) result_id";
+        $sql = "SELECT func_order_edit(:sale_id,:item_id,:quantity,:price,:discount,:item_parent_id,:location_id,:employee_id) result_id";
 
         $result = Yii::app()->db->createCommand($sql)->queryAll(true,
             array(
@@ -291,7 +293,8 @@ class SaleOrder extends CActiveRecord
                 ':price' => $price,
                 ':discount' => $discount,
                 ':item_parent_id' => $item_parent_id,
-                ':location_id' => $location_id
+                ':location_id' => Common::getCurLocationID(),
+                ':employee_id' => Common::getEmployeeID()
             )
         );
 

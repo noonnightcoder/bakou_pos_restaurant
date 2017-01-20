@@ -31,7 +31,7 @@ class OrderingCart extends CApplicationComponent
     public function getCart()
     {
         //$cart=array();
-        $cart = SaleOrder::model()->getOrderCart($this->getSaleId(), Yii::app()->getsetSession->getLocationId());
+        $cart = SaleOrder::model()->getOrderCart($this->getSaleId(), Common::getCurLocationID());
 
         $this->settingSaleSum();
 
@@ -189,17 +189,17 @@ class OrderingCart extends CApplicationComponent
     
     public function getDisGiftcard()
     {
-       return SaleOrder::model()->getDisGiftcard($this->getTableId(), $this->getGroupId(),Yii::app()->getsetSession->getLocationId());
+       return SaleOrder::model()->getDisGiftcard($this->getTableId(), $this->getGroupId(),Common::getCurLocationID());
     }
 
     public function setDisGiftcard($giftcard_id)
     {
-        return SaleOrder::model()->setDisGiftcard($this->getSaleId(),Yii::app()->getsetSession->getLocationId(),$giftcard_id);
+        return SaleOrder::model()->setDisGiftcard($this->getSaleId(),Common::getCurLocationID(),$giftcard_id);
     }
 
     public function clearDisGiftcard()
     {
-        return SaleOrder::model()->clearDisGiftcard($this->getSaleId(),Yii::app()->getsetSession->getLocationId());
+        return SaleOrder::model()->clearDisGiftcard($this->getSaleId(),Common::getCurLocationID());
     }
     
     public function getZoneId()
@@ -279,7 +279,7 @@ class OrderingCart extends CApplicationComponent
             array(
                 ':desk_id' => $this->getTableId(),
                 ':group_id' => $this->getGroupId(),
-                ':location_id' => Yii::app()->getsetSession->getLocationId(),
+                ':location_id' => Common::getCurLocationID(),
                 ':status' => $this->active_status
             ));
 
@@ -388,7 +388,7 @@ class OrderingCart extends CApplicationComponent
     
     public function settingSaleSum()
     {
-        $all_total = SaleOrder::model()->getAllTotal($this->getSaleId(),Yii::app()->getsetSession->getLocationId());
+        $all_total = SaleOrder::model()->getAllTotal($this->getSaleId(),Common::getCurLocationID());
         
         $this->setSaleQty($all_total[0]);
         $this->setSaleSubTotal($all_total[1]);
@@ -398,7 +398,7 @@ class OrderingCart extends CApplicationComponent
 
     public function addItem($item_id, $quantity = 1, $item_parent_id = 0)
     {
-        return SaleOrder::model()->saveOrderingItem($item_id, $this->getTableId(), $this->getGroupId(), $this->getCustomer(), Yii::app()->session['employeeid'], $quantity, $this->getPriceTier(), $item_parent_id, Yii::app()->getsetSession->getLocationId());
+        return SaleOrder::model()->saveOrderingItem($item_id, $this->getTableId(), $this->getGroupId(), $this->getCustomer(), Common::getEmployeeID(), $quantity, $this->getPriceTier(), $item_parent_id, Common::getCurLocationID());
     }
     
     public function f5ItemPriceTier()
@@ -420,14 +420,14 @@ class OrderingCart extends CApplicationComponent
         return true;
     }
 
-    public function editItem($item_id, $quantity, $discount, $price, $item_parent_id,$location_id)
+    public function editItem($item_id, $quantity, $discount, $price, $item_parent_id)
     {
-        SaleOrder::model()->editOrderMenu($this->getSaleId(),$item_id, $quantity, $price, $discount, $item_parent_id,Yii::app()->getsetSession->getLocationId());
+        SaleOrder::model()->editOrderMenu($this->getSaleId(),$item_id, $quantity, $price, $discount, $item_parent_id);
     }
 
     public function deleteItem($item_id,$item_parent_id)
     {
-        SaleOrder::model()->delOrderItem($item_id,$item_parent_id,$this->getTableId(),$this->getGroupId(),Yii::app()->getsetSession->getLocationId());
+        SaleOrder::model()->delOrderItem($item_id,$item_parent_id,$this->getTableId(),$this->getGroupId());
     }
 
     public function outofStock($item_id)
@@ -461,7 +461,7 @@ class OrderingCart extends CApplicationComponent
 
     protected function emptyCart()
     {
-        SaleOrder::model()->cancelOrderMenu($this->getTableId(), $this->getGroupId(),Yii::app()->getsetSession->getLocationId());
+        SaleOrder::model()->cancelOrderMenu($this->getTableId(), $this->getGroupId(),Common::getCurLocationID());
     }
 
     /*
@@ -506,7 +506,7 @@ class OrderingCart extends CApplicationComponent
 
     public function getSubTotal()
     {
-        $subtotal = SaleOrder::model()->getOrderSubTotal($this->getTableId(), $this->getGroupId(),Yii::app()->getsetSession->getLocationId());
+        $subtotal = SaleOrder::model()->getOrderSubTotal($this->getTableId(), $this->getGroupId(),Common::getCurLocationID());
          
         return round($subtotal, $this->getDecimalPlace());
     }
@@ -519,14 +519,14 @@ class OrderingCart extends CApplicationComponent
      */
     public function getTotal()
     {
-        $total = SaleOrder::model()->getOrderTotal($this->getTableId(), $this->getGroupId(),Yii::app()->getsetSession->getLocationId());
+        $total = SaleOrder::model()->getOrderTotal($this->getTableId(), $this->getGroupId(),Common::getCurLocationID());
    
         return round($total, $this->getDecimalPlace());
     }
     
     public function getDiscount()
     {
-        $total = SaleOrder::model()->getOrderDiscount($this->getTableId(), $this->getGroupId(),Yii::app()->getsetSession->getLocationId());
+        $total = SaleOrder::model()->getOrderDiscount($this->getTableId(), $this->getGroupId(),Common::getCurLocationID());
        
         return round($total, $this->getDecimalPlace());
     }
@@ -555,7 +555,7 @@ class OrderingCart extends CApplicationComponent
     //get Total Quatity
     public function getQuantityTotal()
     {
-        return SaleOrder::model()->getOrderTotalQty($this->getTableId(), $this->getGroupId(),Yii::app()->getsetSession->getLocationId());
+        return SaleOrder::model()->getOrderTotalQty($this->getTableId(), $this->getGroupId(),Common::getCurLocationID());
     }
 
     public function copyEntireSale($sale_id)
@@ -658,7 +658,7 @@ class OrderingCart extends CApplicationComponent
     
     public function changeTable($new_table_id)
     {
-       return SaleOrder::model()->changeTable($this->getTableId(),$new_table_id,$this->getGroupId(),Yii::app()->getsetSession->getLocationId(),$this->getPriceTier(),Yii::app()->session['employeeid']);
+       return SaleOrder::model()->changeTable($this->getTableId(),$new_table_id,$this->getGroupId(),Common::getCurLocationID(),$this->getPriceTier(),Common::getEmployeeID());
     }
     
     protected function setPriceByZone($zone_id)

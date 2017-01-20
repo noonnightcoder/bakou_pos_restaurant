@@ -120,7 +120,7 @@ class SaleItemController extends Controller
             $model->quantity=$quantity;
             
             if ($model->validate()) {
-                Yii::app()->orderingCart->editItem($item_id, $quantity, $discount, $price, $item_parent_id,Yii::app()->getsetSession->getLocationId());
+                Yii::app()->orderingCart->editItem($item_id, $quantity, $discount, $price, $item_parent_id,Common::getCurLocationID());
             } else {
                 $error=CActiveForm::validate($model);
                 $errors = explode(":", $error);

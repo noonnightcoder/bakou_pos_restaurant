@@ -154,6 +154,11 @@ Class Common
     {
         return Yii::app()->getsetSession->getLocationId();
     }
+
+    public static function getEmployeeID()
+    {
+        return Yii::app()->session['employeeid'];
+    }
     
 }
 

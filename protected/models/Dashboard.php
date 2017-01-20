@@ -109,6 +109,13 @@ class Dashboard extends CFormModel
                 GROUP BY date_format(s.sale_time,'%d/%m/%y')
                 ORDER BY 1";
 
+        $sql = "SELECT date_format(s.date_report,'%d/%m/%y') date,sum(sub_total) sub_total,sum(sub_total-discount_amount) total
+                FROM summary_sale s
+                WHERE s.location_id =:location_id
+                AND s.status=:status
+                AND ( s.date_report BETWEEN DATE_FORMAT(NOW() ,'%Y-%m-01') AND NOW() )
+                GROUP BY date_format(s.date_report,'%d/%m/%y')";
+
         return Yii::app()->db->createCommand($sql)->queryAll(true, array(
             ':status' => Yii::app()->params['sale_complete_status'],
             ':location_id' => Common::getCurLocationID()
@@ -195,6 +202,11 @@ class Dashboard extends CFormModel
                     ) t1, (SELECT @ROW := 0) r
                 ";
 
+        $sql = " select rank,item_name,category_id,qty,amount 
+                 from top_product
+                 where category_id=9
+                 order by 1";
+
         $rawData = Yii::app()->db->createCommand($sql)->queryAll(true);
 
         $dataProvider = new CArrayDataProvider($rawData, array(
@@ -220,6 +232,11 @@ class Dashboard extends CFormModel
                     ORDER BY qty DESC LIMIT 10
                     ) t1, (SELECT @ROW := 0) r
                 ";
+
+        $sql = " select rank,item_name,category_id,qty,amount 
+                 from top_product
+                 where category_id=1
+                 order by 1";
 
         $rawData = Yii::app()->db->createCommand($sql)->queryAll(true);
 

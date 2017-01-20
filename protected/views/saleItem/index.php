@@ -5,7 +5,7 @@
     }
 </style>
 
-<?php //$this->widget('ext.modaldlg.EModalDlg'); ?>
+<?php $this->widget('ext.modaldlg.EModalDlg'); ?>
 
 <div id="register_container">
 
