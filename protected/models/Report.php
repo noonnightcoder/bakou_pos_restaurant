@@ -132,7 +132,7 @@ class Report extends CFormModel
 
     public function saleInvoiceDetail()
     {
-        $sql= "SELECT sale_id,item_id,name,quantity,price,description,sub_total
+        $sql= "SELECT sale_id,item_id,name,quantity,price,description,sub_total,deleted_at
                FROM v_sale_item
                WHERE sale_id=:sale_id";
 

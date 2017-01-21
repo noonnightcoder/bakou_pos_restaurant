@@ -148,7 +148,7 @@ class SaleOrder extends CActiveRecord
                 AND t1.status=:status
                 AND (t1.quantity-IFNULL(t2.quantity,0)) > 0
                 AND t1.category_id=:category_id
-                    ORDER BY t1.path,t1.modified_date";
+                ORDER BY t1.path,t1.modified_date";
 
             return Yii::app()->db->createCommand($sql)->queryAll(true, array(
                 ':sale_id' => $sale_id,
@@ -211,7 +211,7 @@ class SaleOrder extends CActiveRecord
         return array($quantity, $sub_total, $total, $discount_amount);
     }
 
-    public function saveOrderingItem($item_id, $table_id, $group_id, $client_id, $employee_id, $quantity, $price_tier_id, $item_parent_id, $location_id)
+    public function orderAdd($item_id, $table_id, $group_id, $client_id, $employee_id, $quantity, $price_tier_id, $item_parent_id, $location_id)
     {
 
         $sql = "SELECT func_order_add(:item_id,:item_number,:desk_id,:group_id,:client_id,:employee_id,:quantity,:price_tier_id,:item_parent_id,:location_id) item_id";
@@ -238,49 +238,7 @@ class SaleOrder extends CActiveRecord
         return $id;
     }
 
-    public function savePrintedToKitchen($sale_id, $location_id, $category_id,$employee_id)
-    {
-        $sql = "select func_save_pkitchen(:sale_id,:location_id,:category_id,:employee_id) result_id";
-        $result = Yii::app()->db->createCommand($sql)->queryAll(true,
-            array(
-                ':sale_id' => $sale_id,
-                ':location_id' => $location_id,
-                ':category_id' => $category_id,
-                ':employee_id' => $employee_id
-            )
-        );
-
-        foreach ($result as $record) {
-            $id = $record['result_id'];
-        }
-
-        return $id;
-    }
-
-    public function delOrderItem($item_id, $item_parent_id, $table_id, $group_id)
-    {
-        //$sql = "CALL proc_del_item_cart(:item_id,:item_parent_id,:desk_id,:group_id,:location_id)";
-        $sql = "SELECT func_order_del(:item_id,:item_parent_id,:desk_id,:group_id, :location_id, :employee_id) result_id";
-
-        $result = Yii::app()->db->createCommand($sql)->queryAll(true,
-            array(
-                ':item_id' => $item_id,
-                ':item_parent_id' => $item_parent_id,
-                ':desk_id' => $table_id,
-                ':group_id' => $group_id,
-                ':location_id' => Common::getCurLocationID(),
-                ':employee_id' => Common::getEmployeeID()
-            )
-        );
-
-        foreach ($result as $record) {
-            $result_id = $record['result_id'];
-        }
-
-        return $result_id;
-    }
-
-    public function editOrderMenu($sale_id, $item_id, $quantity, $price, $discount, $item_parent_id)
+    public function orderEdit($sale_id, $item_id, $quantity, $price, $discount, $item_parent_id)
     {
         //$sql = "CALL proc_edit_menu_order(:desk_id,:group_id,:item_id,:quantity,:price,:discount,:item_parent_id,:location_id)";
         $sql = "SELECT func_order_edit(:sale_id,:item_id,:quantity,:price,:discount,:item_parent_id,:location_id,:employee_id) result_id";
@@ -303,6 +261,49 @@ class SaleOrder extends CActiveRecord
         }
 
         return $result_id;
+    }
+
+    public function orderDel($item_id, $item_parent_id, $table_id, $group_id)
+    {
+        //$sql = "CALL proc_del_item_cart(:item_id,:item_parent_id,:desk_id,:group_id,:location_id)";
+        $sql = "SELECT func_order_del(:item_id,:item_parent_id,:desk_id,:group_id, :location_id, :employee_id) result_id";
+
+        $result = Yii::app()->db->createCommand($sql)->queryAll(true,
+            array(
+                ':item_id' => $item_id,
+                ':item_parent_id' => $item_parent_id,
+                ':desk_id' => $table_id,
+                ':group_id' => $group_id,
+                ':location_id' => Common::getCurLocationID(),
+                ':employee_id' => Common::getEmployeeID()
+            )
+        );
+
+        foreach ($result as $record) {
+            $result_id = $record['result_id'];
+        }
+
+        return $result_id;
+    }
+
+    public function orderSave($desk_id,$group_id,$payment_total)
+    {
+        $sql="SELECT func_order_save(:desk_id,:group_id,:location_id,:payment_total,:employee_id) sale_id";
+        $result = Yii::app()->db->createCommand($sql)->queryAll(true, array(
+                ':desk_id' => $desk_id,
+                ':group_id' => $group_id,
+                ':location_id' => Common::getCurLocationID(),
+                ':payment_total' => $payment_total,
+                ':employee_id' => Common::getEmployeeID()
+            )
+        );
+
+        foreach ($result as $record) {
+            $sale_id = $record['sale_id'];
+        }
+
+        return $sale_id;
+
     }
 
     public function cancelOrderMenu($desk_id, $group_id, $location_id)
@@ -335,6 +336,26 @@ class SaleOrder extends CActiveRecord
         return $group_id;
     }
 
+    public function savePrintedToKitchen($sale_id, $location_id, $category_id,$employee_id)
+    {
+        $sql = "select func_save_pkitchen(:sale_id,:location_id,:category_id,:employee_id) result_id";
+        $result = Yii::app()->db->createCommand($sql)->queryAll(true,
+            array(
+                ':sale_id' => $sale_id,
+                ':location_id' => $location_id,
+                ':category_id' => $category_id,
+                ':employee_id' => $employee_id
+            )
+        );
+
+        foreach ($result as $record) {
+            $id = $record['result_id'];
+        }
+
+        return $id;
+    }
+
+    /*
     public function delOrder($desk_id, $group_id, $location_id)
     {
         $sql = "CALL proc_del_sale_order(:desk_id,:group_id,:location_id)";
@@ -346,6 +367,7 @@ class SaleOrder extends CActiveRecord
             )
         );
     }
+    */
 
     public function setDisGiftcard($sale_id, $location_id,$giftcard_id)
     {
@@ -495,15 +517,16 @@ class SaleOrder extends CActiveRecord
                 ORDER BY so.sale_time desc";
 
         $result = Yii::app()->db->createCommand($sql)->queryAll(true, array(
-            ':location_id' => Yii::app()->getsetSession->getLocationId(),
+            ':location_id' => Common::getCurLocationID(),
             ':status' => Yii::app()->params['num_one'],
             ':str_zero' => Yii::app()->params['str_zero'],
-            ':employee_id' => Yii::app()->session['employeeid']
+            ':employee_id' => Common::getEmployeeID()
         ));
 
         return $result;
     }
 
+    /*
     public function getSaleOrderByDeskId()
     {
         $sale_order = SaleOrder::model()->find('desk_id=:desk_id and group_id=:group_id and location_id=:location_id and status=:status',
@@ -516,6 +539,7 @@ class SaleOrder extends CActiveRecord
 
         return isset($sale_order) ? $sale_order : null;
     }
+    */
 
     public function getSaleOrderById($sale_id,$location_id)
     {

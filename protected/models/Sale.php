@@ -144,15 +144,15 @@ class Sale extends CActiveRecord
         return parent::model($className);
     }
        
-    public function saveSale($desk_id,$group_id,$location_id,$payment_total,$employee_id)
+    public function saveSale($desk_id,$group_id,$payment_total)
     {
-        $sql="SELECT func_save_sale(:desk_id,:group_id,:location_id,:payment_total,:employee_id) sale_id";
+        $sql="SELECT func_order_save(:desk_id,:group_id,:location_id,:payment_total,:employee_id) sale_id";
         $result=Yii::app()->db->createCommand($sql)->queryAll(true, array(
                         ':desk_id'=>$desk_id,
                         ':group_id'=>$group_id,
-                        ':location_id'=>$location_id,
+                        ':location_id'=> Common::getCurLocationID(),
                         ':payment_total'=>$payment_total,
-                        ':employee_id'=>$employee_id
+                        ':employee_id'=> Common::getCurLocationID()
                     )
                 );
         

@@ -374,7 +374,7 @@ class SaleItemController extends Controller
         
         $data=$this->sessionInfo();
 
-        $data['sale_id']= Sale::model()->saveSale($data['table_id'],$data['group_id'],Yii::app()->getsetSession->getLocationId(),$data['payment_total'],$data['employee_id']);
+        $data['sale_id']= SaleOrder::model()->orderSave($data['table_id'],$data['group_id'],$data['payment_total']);
         
         if ($data['sale_id'] == -1) {
             $data['warning']=Yii::t('app','The serving table had been printed or changed.');

@@ -133,7 +133,9 @@ class ReportColumn extends CModel
         return array(
             array('name'=>'name',
                 'header'=>Yii::t('app','Item Name'),
-                'value'=>'$data["name"]',
+                //'value'=>'$data["name"]',
+                'value' => '$data["deleted_at"] == null ? $data["name"] : "<s class=\"red\">" .  $data["name"] ',
+                'type' => 'raw'
             ),
             array('name'=>'quantity',
                 'header'=>Yii::t('app','QTY'),
@@ -149,9 +151,11 @@ class ReportColumn extends CModel
             ),
             array('name'=>'sub_total',
                 'header'=>Yii::t('app','Sub Total'),
-                'value' =>'number_format($data["sub_total"],Common::getDecimalPlace(), ".", ",")',
+                //'value' =>'number_format($data["sub_total"],Common::getDecimalPlace(), ".", ",")',
+                'value' => '$data["deleted_at"] == null ? number_format($data["sub_total"],Common::getDecimalPlace(), ".", ",") : "<s class=\"red\">" .  number_format($data["sub_total"],Common::getDecimalPlace(), ".", ",") ',
                 'htmlOptions'=>array('style' => 'text-align: right;'),
                 'headerHtmlOptions'=>array('style' => 'text-align: right;'),
+                'type' => 'raw'
             ),
         );
     }

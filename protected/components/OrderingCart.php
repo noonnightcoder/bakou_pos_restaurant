@@ -398,7 +398,7 @@ class OrderingCart extends CApplicationComponent
 
     public function addItem($item_id, $quantity = 1, $item_parent_id = 0)
     {
-        return SaleOrder::model()->saveOrderingItem($item_id, $this->getTableId(), $this->getGroupId(), $this->getCustomer(), Common::getEmployeeID(), $quantity, $this->getPriceTier(), $item_parent_id, Common::getCurLocationID());
+        return SaleOrder::model()->orderAdd($item_id, $this->getTableId(), $this->getGroupId(), $this->getCustomer(), Common::getEmployeeID(), $quantity, $this->getPriceTier(), $item_parent_id, Common::getCurLocationID());
     }
     
     public function f5ItemPriceTier()
@@ -422,12 +422,12 @@ class OrderingCart extends CApplicationComponent
 
     public function editItem($item_id, $quantity, $discount, $price, $item_parent_id)
     {
-        SaleOrder::model()->editOrderMenu($this->getSaleId(),$item_id, $quantity, $price, $discount, $item_parent_id);
+        SaleOrder::model()->orderEdit($this->getSaleId(),$item_id, $quantity, $price, $discount, $item_parent_id);
     }
 
     public function deleteItem($item_id,$item_parent_id)
     {
-        SaleOrder::model()->delOrderItem($item_id,$item_parent_id,$this->getTableId(),$this->getGroupId());
+        SaleOrder::model()->orderDel($item_id,$item_parent_id,$this->getTableId(),$this->getGroupId());
     }
 
     public function outofStock($item_id)
