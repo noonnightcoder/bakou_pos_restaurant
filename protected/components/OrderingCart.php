@@ -31,7 +31,8 @@ class OrderingCart extends CApplicationComponent
     public function getCart()
     {
         //$cart=array();
-        $cart = SaleOrder::model()->getOrderCart($this->getSaleId(), Common::getCurLocationID());
+        //$cart = SaleOrder::model()->getOrderCart($this->getSaleId(), Common::getCurLocationID());
+        $cart = SaleOrder::model()->getOrderCart($this->getTableId(), $this->getGroupId(),Common::getCurLocationID());
 
         $this->settingSaleSum();
 
@@ -388,7 +389,7 @@ class OrderingCart extends CApplicationComponent
     
     public function settingSaleSum()
     {
-        $all_total = SaleOrder::model()->getAllTotal($this->getSaleId(),Common::getCurLocationID());
+        $all_total = SaleOrder::model()->getAllTotal($this->getTableId(),$this->getGroupId(),Common::getCurLocationID());
         
         $this->setSaleQty($all_total[0]);
         $this->setSaleSubTotal($all_total[1]);

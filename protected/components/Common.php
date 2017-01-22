@@ -155,6 +155,21 @@ Class Common
         return Yii::app()->getsetSession->getLocationId();
     }
 
+    public static function getZoneID()
+    {
+        return Yii::app()->orderingCart->getZoneId();
+    }
+
+    public static function getTableID()
+    {
+        return Yii::app()->orderingCart->getTableId();
+    }
+
+    public static function getGroupID()
+    {
+        return Yii::app()->orderingCart->getGroupId();
+    }
+
     public static function getEmployeeID()
     {
         return Yii::app()->session['employeeid'];

@@ -110,8 +110,10 @@ class SaleOrder extends CActiveRecord
     }
 
     //public function getOrderCart($desk_id, $group_id, $location_id)
-    public function getOrderCart($sale_id, $location_id)
+    //public function getOrderCart($sale_id, $location_id)
+    public function getOrderCart($desk_id,$group_id,$location_id)
     {
+        /*
         $sql = "SELECT item_number,item_id,`name`,quantity,price,discount_amount discount,
                 total,client_id,desk_id,zone_id,employee_id,qty_in_stock,topping,item_parent_id,category_id
                 FROM v_order_cart
@@ -120,11 +122,28 @@ class SaleOrder extends CActiveRecord
                 AND status=:status
                 AND deleted_at is null
                 ORDER BY path,modified_date desc";
-                //ORDER BY IF(item_parent_id=0, item_id, item_parent_id), item_parent_id!=0, item_id DESC";
-                //ORDER BY path,modified_date desc";
 
         return Yii::app()->db->createCommand($sql)->queryAll(true, array(
                 ':sale_id' => $sale_id,
+                ':location_id' => $location_id,
+                ':status' => Yii::app()->params['num_one']
+            )
+        );
+        */
+
+        $sql = "SELECT item_number,item_id,`name`,quantity,price,discount_amount discount,
+                total,client_id,desk_id,zone_id,employee_id,qty_in_stock,topping,item_parent_id,category_id
+                FROM v_order_cart
+                WHERE desk_id=:desk_id
+                AND group_id=:group_id
+                AND location_id=:location_id
+                AND status=:status
+                AND deleted_at is null
+                ORDER BY path,modified_date desc";
+
+        return Yii::app()->db->createCommand($sql)->queryAll(true, array(
+                ':desk_id' => $desk_id,
+                ':group_id' => $group_id,
                 ':location_id' => $location_id,
                 ':status' => Yii::app()->params['num_one']
             )
@@ -179,7 +198,7 @@ class SaleOrder extends CActiveRecord
     }
 
     //public function getAllTotal($desk_id, $group_id, $location_id)
-    public function getAllTotal($sale_id, $location_id)
+    public function getAllTotal($desk_id,$group_id, $location_id)
     {
         $quantity = 0;
         $sub_total = 0;
@@ -187,6 +206,7 @@ class SaleOrder extends CActiveRecord
         $discount_amount = 0;
 
         /* Get Sale ID by Desk ID every time we focus on that table */
+        /*
         $sql = "SELECT s.id sale_id,SUM(so.quantity) quantity,SUM(so.total) sub_total,sum(total) - sum(total)*global_discount total,sum(total)*global_discount discount_amount
                 FROM v_sale_order s JOIN v_sale_order_tem_sum so ON so.sale_id = s.id
                 WHERE s.id=:sale_id
@@ -199,6 +219,30 @@ class SaleOrder extends CActiveRecord
             ':location_id' => $location_id,
             ':status' => Yii::app()->params['num_one']
         ));
+        */
+
+        $sql="SELECT sale_id,sum(quantity) quantity,
+                    SUM(price*quantity) sub_total,
+                    SUM(price*quantity) - (SUM(price*quantity)*IFNULL(so.discount_amount,0)/100) total,
+                    SUM(price*quantity)*IFNULL(so.discount_amount,0)/100 discount_amount
+                FROM v_order_cart oc JOIN sale_order so
+                            ON so.id=oc.sale_id 
+                            and so.desk_id=oc.desk_id
+                            and so.group_id=oc.group_id
+                            and so.location_id=oc.location_id
+                WHERE oc.desk_id=:desk_id 
+                AND oc.group_id=:group_id
+                AND oc.location_id=:location_id
+                AND oc.status=:status
+                GROUP BY sale_id";
+
+        $result = Yii::app()->db->createCommand($sql)->queryAll(true, array(
+            ':desk_id' => $desk_id,
+            ':group_id' => $group_id,
+            ':location_id' => $location_id,
+            ':status' => Yii::app()->params['num_one']
+        ));
+
         if ($result) {
             foreach ($result as $record) {
                 $quantity = $record['quantity'];
@@ -526,20 +570,18 @@ class SaleOrder extends CActiveRecord
         return $result;
     }
 
-    /*
     public function getSaleOrderByDeskId()
     {
         $sale_order = SaleOrder::model()->find('desk_id=:desk_id and group_id=:group_id and location_id=:location_id and status=:status',
             array(
-                ':desk_id' => Yii::app()->orderingCart->getTableId(),
-                ':group_id' => Yii::app()->orderingCart->getGroupId(),
-                ':location_id' => Yii::app()->getsetSession->getLocationId(),
+                ':desk_id' => Common::getTableID(),
+                ':group_id' => Common::getGroupID(),
+                ':location_id' => Common::getCurLocationID(),
                 ':status' => Yii::app()->params['num_one']
             ));
 
         return isset($sale_order) ? $sale_order : null;
     }
-    */
 
     public function getSaleOrderById($sale_id,$location_id)
     {

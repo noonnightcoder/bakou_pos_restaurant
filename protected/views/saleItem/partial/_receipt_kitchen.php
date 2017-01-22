@@ -93,9 +93,10 @@
     
 </div>
 
+<!--
 <script>
     $(window).bind("load", function() {
-        jsPrintSetup.setPrinter('<?php echo $printer; ?>');
+        jsPrintSetup.setPrinter('<?php //echo $printer; ?>');
         console.log(jsPrintSetup.getPrinter());
         jsPrintSetup.printWindow(window);
         //window.print();
@@ -103,8 +104,9 @@
         return true;
     });
 </script>
+-->
 
-<!--<script>
+<script>
 function printpage()
 {
     setTimeout(window.location.href='index',500);
@@ -112,4 +114,4 @@ function printpage()
     return true;
 }
 window.onload=printpage();
-</script>-->
+</script>

@@ -387,7 +387,7 @@ class SaleItemController extends Controller
             /* Added this step (Update Sale_Order status to 0=completed) at the end of func_save_sale  */
             //SaleOrder::model()->delOrder($data['table_id'], $data['group_id'],Yii::app()->getsetSession->getLocationId());
             
-            $this->render('touchscreen/_receipt', $data);  
+            $this->render('partial/_receipt', $data);
            
         }
     }
@@ -510,13 +510,13 @@ class SaleItemController extends Controller
         
         if (Yii::app()->settings->get('sale', 'touchScreen') == '1') {
             
-            $data['zones'] = Zone::model()->getAllZone(Yii::app()->getsetSession->getLocationId());
+            $data['zones'] = Zone::model()->getAllZone(Common::getCurLocationID());
             $data['table_info'] = Desk::model()->findByPk($data['table_id']);
                     
             if ($data['zone_id']==-1) {
-                $data['tables'] = Desk::model()->getTableAll(Yii::app()->getsetSession->getLocationId());
+                $data['tables'] = Desk::model()->getTableAll(Common::getCurLocationID());
             } else {
-                $data['tables'] = Desk::model()->getTablebyZone($data['zone_id'],Yii::app()->getsetSession->getLocationId());
+                $data['tables'] = Desk::model()->getTablebyZone($data['zone_id'],Common::getCurLocationID());
             }
         }
 
@@ -553,13 +553,13 @@ class SaleItemController extends Controller
 
         $data=$this->sessionInfo($data);
 
-        $data['zones'] = Zone::model()->getAllZone(Yii::app()->getsetSession->getLocationId());
+        $data['zones'] = Zone::model()->getAllZone(Common::getCurLocationID());
         $data['table_info'] = Desk::model()->findByPk($data['table_id']);
 
         if ($data['zone_id']==-1) {
-            $data['tables'] = Desk::model()->getTableAll(Yii::app()->getsetSession->getLocationId());
+            $data['tables'] = Desk::model()->getTableAll(Common::getCurLocationID());
         } else {
-            $data['tables'] = Desk::model()->getTablebyZone($data['zone_id'],Yii::app()->getsetSession->getLocationId());
+            $data['tables'] = Desk::model()->getTablebyZone($data['zone_id'],Common::getCurLocationID());
         }
 
 
@@ -645,16 +645,16 @@ class SaleItemController extends Controller
         $data['giftcard_info'] = null;
         $data['giftcard_id'] = 0;
 
-        $data['location_id'] = Yii::app()->getsetSession->getLocationId();
-        $data['zone_id'] = Yii::app()->orderingCart->getZoneId();
-        $data['table_id'] = Yii::app()->orderingCart->getTableId();
-        $data['group_id'] = Yii::app()->orderingCart->getGroupId();
-        $data['employee_id'] = Yii::app()->session['employeeid'];
+        $data['location_id'] = Common::getCurLocationID();
+        $data['zone_id'] = Common::getZoneID();
+        $data['table_id'] = Common::getTableID();
+        $data['group_id'] = Common::getGroupID();
+        $data['employee_id'] = Common::getEmployeeID();
 
 
         if ( isset($data['table_id']) && isset($data['location_id']) ) {
 
-            $data['sale_id'] = Yii::app()->orderingCart->getSaleId();
+            //$data['sale_id'] = Yii::app()->orderingCart->getSaleId();
 
             $data['items'] = Yii::app()->orderingCart->getCart();
             $data['payments'] = Yii::app()->orderingCart->getPayments();
@@ -667,10 +667,6 @@ class SaleItemController extends Controller
             $data['sub_total'] = Yii::app()->orderingCart->getSaleSubTotal();
             $data['total'] = Yii::app()->orderingCart->getSaleTotal();
             $data['discount_amount'] = Yii::app()->orderingCart->getSaleDiscount();
-
-            //$data['sale_id'] = Yii::app()->orderingCart->getSaleId();
-            //$data['location_id'] = Yii::app()->getsetSession->getLocationId();
-            //$data['group_id'] = Yii::app()->orderingCart->getGroupId();
 
             $data['giftcard_id'] = Yii::app()->orderingCart->getDisGiftcard();
             $data['price_tier_id'] = Yii::app()->orderingCart->getPriceTier();
@@ -689,7 +685,7 @@ class SaleItemController extends Controller
             /*** Getting Object **/
             $employee = Employee::model()->employeeByID($data['employee_id']);
             $data['table_info'] = Desk::model()->findByPk($data['table_id']);
-            $sale_order = SaleOrder::model()->getSaleOrderById($data['sale_id'],$data['location_id']);
+            $sale_order = SaleOrder::model()->getSaleOrderByDeskId();
             $data['print_categories'] = Category::model()->getPrintCatogory();
 
             $data['employee'] = $employee;

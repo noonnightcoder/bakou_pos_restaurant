@@ -145,7 +145,7 @@ class Desk extends CActiveRecord
                   CASE 
                      WHEN (IFNULL(so.id,0)=0 or so.empty_flag=0) THEN 0
                      ELSE 1
-		  END busy_flag
+		          END busy_flag
                   FROM desk d LEFT JOIN sale_order so ON so.desk_id=d.id
                                     and so.location_id=:location_id
                                     and so.status=:status
