@@ -216,13 +216,14 @@ class SaleItemController extends Controller
             $data= array();
             
             $data['items'] = Yii::app()->orderingCart->getCart();
+
             if (count($data['items']) == 0) {
                 $data['warning'] = Yii::t('app','The serving table had been printed or changed.');
                 Yii::app()->user->setFlash('info', Yii::t('app','The serving table had been printed or changed.'));
             } 
             
             if(Yii::app()->orderingCart->SetDisGiftcard($giftcard_id)==0) {
-                Yii::app()->user->setFlash('info', Yii::t('app','Unable to add Gift Card'));
+                Yii::app()->user->setFlash('info', Yii::t('app','Unable to add Gift Card, please review your card number and try again'));
             }
             
             $this->reload($data);
@@ -313,6 +314,7 @@ class SaleItemController extends Controller
         $this->layout = '//layouts/column_receipt';
         
         $data=$this->sessionInfo();
+
         //$data['sale_id'] = Yii::app()->orderingCart->getSaleId();
         SaleOrder::model()->updateSaleOrderTempStatus('0');
 

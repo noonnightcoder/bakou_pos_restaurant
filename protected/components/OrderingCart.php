@@ -195,12 +195,12 @@ class OrderingCart extends CApplicationComponent
 
     public function setDisGiftcard($giftcard_id)
     {
-        return SaleOrder::model()->setDisGiftcard($this->getSaleId(),Common::getCurLocationID(),$giftcard_id);
+        return SaleOrder::model()->setDisGiftcard($giftcard_id);
     }
 
     public function clearDisGiftcard()
     {
-        return SaleOrder::model()->clearDisGiftcard($this->getSaleId(),Common::getCurLocationID());
+        return SaleOrder::model()->clearDisGiftcard();
     }
     
     public function getZoneId()

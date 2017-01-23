@@ -137,9 +137,9 @@ class Giftcard extends CActiveRecord
 
         // Recommended: Secure Way to Write SQL in Yii
         $sql = 'SELECT id ,concat_ws(" - discount %",giftcard_number,discount_amount) AS text
-                    FROM giftcard 
-                    WHERE giftcard_number= :name
-                    AND status=:active_status';
+                FROM giftcard 
+                WHERE giftcard_number= :name
+                AND status=:active_status';
 
         //$name = '%' . $name . '%';
         return Yii::app()->db->createCommand($sql)->queryAll(true, array(':name' => $name, ':active_status' => Yii::app()->params['active_status'] ));
@@ -159,14 +159,15 @@ class Giftcard extends CActiveRecord
             'condition' => 'giftcard_number like :keyword and status=:active_status',
             'order' => 'giftcard_number',
             'limit' => $limit,
-            'params' => array(':keyword' => $keyword . '%', ':active_status' => Yii::app()->params['active_status'])
+            'params' => array(':keyword' => $keyword, ':active_status' => Yii::app()->params['active_status'])
         ));
 
         $suggest = array();
 
         foreach ($models as $model) {
             $suggest[] = array(
-                'label' => $model->giftcard_number . ' - ' . $model->discount_amount,  // label for dropdown list
+                //'label' => $model->giftcard_number . ' - ' . $model->discount_amount,  // label for dropdown list
+                'label' => 'Alright, press enter',
                 'value' => $model->giftcard_number,  // value for input field
                 'id' => $model->id,       // return values from autocomplete
                 //'unit_price'=>$model->unit_price,

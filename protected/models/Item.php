@@ -130,7 +130,7 @@ class Item extends CActiveRecord
         return array(
             'id' => 'ID',
             'name' => Yii::t('app', 'Item Name'),
-            'item_number' => Yii::t('app', 'Item No'),
+            'item_number' => Yii::t('app', 'Item Code'),
             'unit_id' => Yii::t('app', 'Unit'),
             'category_id' => Yii::t('app', 'Category'),
             'supplier_id' => Yii::t('app', 'Supplier'),

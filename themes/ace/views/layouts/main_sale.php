@@ -47,6 +47,8 @@
     
     <?php
         $cs->registerScriptFile($baseUrl.'/js/app.min.js',CClientScript::POS_END);
+
+        /* All below *.js merge into app.mini.js */
         /*
         $cs->registerScriptFile($baseUrl.'/js/ace-extra.min.js',CClientScript::POS_END);
         $cs->registerScriptFile($baseUrl.'/js/ace-elements.min.js',CClientScript::POS_END);  
@@ -55,6 +57,7 @@
         $cs->registerScriptFile($baseUrl.'/js/select2.min.js',CClientScript::POS_END);
         $cs->registerScriptFile($baseUrl.'/js/jquery.form.min.js',CClientScript::POS_END);
         */
+
     ?>
 
     <?php 

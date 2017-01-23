@@ -1,10 +1,4 @@
 <style>
-#sale_return_policy {
-    width: 80%;
-    margin: 0 auto;
-    text-align: center;
-}   
-
 /*Receipt styles start*/
 #receipt_wrapper {
     font-family: Arial;
@@ -14,24 +8,12 @@
     padding: 0 !important;
 }
 
-    
 #receipt_items td {
   //position: relative;
   padding: 3px;
-}      
+}
 </style>
-<div class="container" id="receipt_wrapper"> 
-    <!--
-    <div class="row">
-        <div class="col-xs-6">
-            <h1> <img src="logo.png">Logo here</h1>
-        </div>
-        <div class="col-xs-6 text-right">
-            <h1>INVOICE</h1>
-            <h1><small>Invoice #001</small></h1>
-        </div>
-    </div>
-    -->
+<div class="container" id="receipt_wrapper">
     <div class="row">
         <div class="col-xs-6">
             <p class="">
@@ -53,7 +35,7 @@
         </div>
     </div>
     <!-- / end client details section -->
-    
+
     <div class="row">
         <div class="col-xs-6">
             <p>
@@ -83,7 +65,7 @@
                 <th class="center" style='border-top:2px solid #000000; border-bottom:2px solid #000000;'><?php echo TbHtml::encode(Yii::t('app','Total')); ?></th>
             </tr>
         </thead>
-        <tbody>  
+        <tbody>
             <?php $i=0; ?>
             <?php foreach($items as $id=>$item): ?>
                 <?php
@@ -92,7 +74,7 @@
                     $item_id=$item['item_id'];
                 ?>
                 <tr>
-                    <!-- <td class="center"><?php //echo TbHtml::encode($i); ?></td> -->                    
+                    <!-- <td class="center"><?php //echo TbHtml::encode($i); ?></td> -->
                     <?php if ($item['topping']==0) { ?>
                         <td><?php echo TbHtml::encode($item['name']); ?></td>
                     <?php } else { ?>
@@ -103,14 +85,14 @@
                     <td class="<?php echo Yii::app()->settings->get('sale','discount'); ?>"><?php echo TbHtml::encode($item['discount']); ?></td>
                     <td class="text-right"><?php echo TbHtml::encode($total_item); ?>
                 </tr>
-            <?php endforeach; ?> <!--/endforeach-->  
+            <?php endforeach; ?> <!--/endforeach-->
             <tr class="gift_receipt_element">
                 <td colspan="3" style='text-align:right;border-top:2px solid #000000;'>Sub Total</td>
                 <td colspan="1" style='text-align:right;border-top:2px solid #000000;'> <?php echo Yii::app()->settings->get('site', 'currencySymbol') . number_format($sub_total,Yii::app()->shoppingCart->getDecimalPlace(), '.', ','); ?></td>
             </tr>
             <tr class="gift_receipt_element">
                 <td colspan="3" class="text-right">Discount</td>
-                <td colspan="1" class="text-right"> 
+                <td colspan="1" class="text-right">
                     <?php echo Yii::app()->settings->get('site', 'currencySymbol') . number_format($discount_amount,Yii::app()->shoppingCart->getDecimalPlace(), '.', ','); ?>
                 </td>
             </tr>
@@ -127,15 +109,13 @@
             </tr>
         </tbody>
     </table>
-    
+
 </div>
 
 <script>
-function printpage()
-{
-    setTimeout(window.location.href='index',500);
-    window.print();
-    return true;
-}
-window.onload=printpage();
+    $(window).bind("load", function() {
+        setTimeout(window.location.href='index',5000);
+        window.print();
+        return true;
+    });
 </script>

@@ -121,6 +121,7 @@ $('.search-form form').submit(function(){
            */
             array(
                 'name' => 'item_number',
+                'header' => 'Item Code',
                 'value' => '$data->status=="1" ? $data->item_number : "<span class=\"text-muted\">  $data->item_number <span>" ',
                 'type'  => 'raw',
                 'filter' => '',

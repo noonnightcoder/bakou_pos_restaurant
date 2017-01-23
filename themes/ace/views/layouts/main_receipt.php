@@ -35,8 +35,8 @@
     <!--[if lte IE 9]>
         <link rel="stylesheet" type="text/css" href="<?php echo $baseUrl ?>/css/ace-part2.min.css" />
     <![endif]-->
-    <!-- <link rel="stylesheet" type="text/css" href="<?php //echo $baseUrl ?>/css/ace-skins.min.css" />
-    <link rel="stylesheet" type="text/css" href="<?php //echo $baseUrl ?>/css/ace-rtl.min.css" /> -->
+    <link rel="stylesheet" type="text/css" href="<?php echo $baseUrl ?>/css/ace-skins.min.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $baseUrl ?>/css/ace-rtl.min.css" />
     
     <!--[if lte IE 9]>
         <link rel="stylesheet" type="text/css" href="<?php echo $baseUrl ?>/css/ace-ie.min.css" />

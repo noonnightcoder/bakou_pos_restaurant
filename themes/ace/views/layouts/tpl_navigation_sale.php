@@ -35,10 +35,17 @@ $sale_order = new SaleOrder;
             <div class="navbar-buttons navbar-header pull-right" role="navigation" id="navigation_bar">
                     <ul class="nav ace-nav">
                         <!-- #section:basics/navbar.user_menu -->
-                        <li class="grey">
-                            <a href="<?php echo Yii::app()->createUrl('dashboard/view') ?>">
+                        <!--<li class="grey">
+                            <a href="<?php /*echo Yii::app()->createUrl('dashboard/view') */?>">
                                 <i class="glyphicon glyphicon-off"></i>
-                                <small><?= Yii::t('app','Exit'); ?></small>
+                                <small><?/*= Yii::t('app','Exit'); */?></small>
+                            </a>
+                        </li>-->
+
+                        <li class="white">
+                            <a href="<?php echo Yii::app()->createUrl('site/logout'); ?>">
+                                <i class="ace-icon fa fa-power-off"></i>
+                                <?= Yii::t('app','Logout'); ?>
                             </a>
                         </li>
 

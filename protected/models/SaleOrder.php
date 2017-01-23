@@ -234,6 +234,7 @@ class SaleOrder extends CActiveRecord
                 AND oc.group_id=:group_id
                 AND oc.location_id=:location_id
                 AND oc.status=:status
+                AND ISNULL(deleted_at)
                 GROUP BY sale_id";
 
         $result = Yii::app()->db->createCommand($sql)->queryAll(true, array(
@@ -413,7 +414,7 @@ class SaleOrder extends CActiveRecord
     }
     */
 
-    public function setDisGiftcard($sale_id, $location_id,$giftcard_id)
+    public function setDisGiftcard($giftcard_id)
     {
 
         /*
@@ -448,12 +449,14 @@ class SaleOrder extends CActiveRecord
         return true;
         */
 
-        $sql = "SELECT func_set_giftcard(:sale_id,:location_id,:giftcard_id) result_id";
+        $sql = "SELECT func_giftcard_set(:desk_id,:group_id,:location_id,:giftcard_id,:employee_id) result_id";
         $result = Yii::app()->db->createCommand($sql)->queryAll(true,
             array(
-                ':sale_id' => $sale_id,
-                ':location_id' => $location_id,
-                ':giftcard_id' => $giftcard_id
+                ':desk_id' => Common::getTableID(),
+                ':group_id' => Common::getGroupID(),
+                ':location_id' => Common::getCurLocationID(),
+                ':giftcard_id' => $giftcard_id,
+                ':employee_id' => Common::getEmployeeID(),
             )
         );
 
@@ -465,26 +468,16 @@ class SaleOrder extends CActiveRecord
 
     }
 
-    public function clearDisGiftcard($sale_id, $location_id)
+    public function clearDisGiftcard()
     {
-        /*$sql = "update sale_order
-                set giftcard_id=null,discount_amount=null
-                  where desk_id=:desk_id and group_id=:group_id
-                  and location_id=:location_id
-                  and status=:status";
 
-        $command = Yii::app()->db->createCommand($sql);
-        $command->bindParam(":desk_id", $desk_id, PDO::PARAM_INT);
-        $command->bindParam(":group_id", $group_id, PDO::PARAM_INT);
-        $command->bindParam(":location_id", $location_id, PDO::PARAM_INT);
-        $command->bindParam(":status", Yii::app()->params['num_one']);
-        $command->execute();*/
-
-        $sql = "SELECT func_clear_giftcard(:sale_id,:location_id) result_id";
+        $sql = "SELECT func_giftcard_clear(:desk_id,:group_id,:location_id,:employee_id) result_id";
         $result = Yii::app()->db->createCommand($sql)->queryAll(true,
             array(
-                ':sale_id' => $sale_id,
-                ':location_id' => $location_id,
+                ':desk_id' => Common::getTableID(),
+                ':group_id' => Common::getGroupID(),
+                ':location_id' => Common::getCurLocationID(),
+                ':employee_id' => Common::getEmployeeID(),
             )
         );
 
