@@ -84,7 +84,7 @@ class Report extends CFormModel
         if ($this->search_id !== '') {
 
             $sql = "SELECT sale_id,sale_time,employee_name,employee_id,client_id,location_name_kh,
-                      0 quantity,sub_total,discount_amount,vat_amount,total,status,status_f
+                      0 quantity,sub_total,discount_amount,vat_amount,total,status,status_f,desk_name,deleted_at
                     FROM v_sale_meta
                     WHERE (sale_id=:search_id AND location_id=:location_id )
                     -- OR (c_first_name like :first_name OR c_last_name like :last_name OR client_name like :full_name )
@@ -95,14 +95,14 @@ class Report extends CFormModel
                     //':first_name' => '%' . $this->search_id . '%',
                     //':last_name' => '%' . $this->search_id . '%',
                     //':full_name' => '%' . $this->search_id . '%',
-                    ':location_id' => $this->location_id,//Common::getCurLocationID(),
+                    ':location_id' => $this->location_id
                 )
             );
 
         } else {
 
             $sql = "SELECT sale_id,sale_time,employee_name,employee_id,client_id,location_name_kh,
-                      0 quantity,sub_total,discount_amount,vat_amount,total,status,status_f
+                      0 quantity,sub_total,discount_amount,vat_amount,total,status,status_f,desk_name,deleted_at
                     FROM v_sale_meta
                     WHERE location_id=:location_id
                     AND sale_time>=str_to_date(:from_date,'%d-%m-%Y')
@@ -134,9 +134,10 @@ class Report extends CFormModel
     {
         $sql= "SELECT sale_id,item_id,name,quantity,price,description,sub_total,deleted_at
                FROM v_sale_item
-               WHERE sale_id=:sale_id";
+               WHERE sale_id=:sale_id
+               AND location_id=:location_id";
 
-        $rawData = Yii::app()->db->createCommand($sql)->queryAll(true, array(':sale_id' => $this->sale_id));
+        $rawData = Yii::app()->db->createCommand($sql)->queryAll(true, array(':sale_id' => $this->sale_id, ':location_id' => Common::getCurLocationID()));
 
         $dataProvider = new CArrayDataProvider($rawData, array(
             'keyField' => 'sale_id',

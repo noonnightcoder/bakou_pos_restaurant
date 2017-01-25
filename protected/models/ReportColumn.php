@@ -29,13 +29,19 @@ class ReportColumn extends CModel
         return array(
             array('name' => 'sale_id',
                 'header' => Yii::t('app', 'Invoice ID'),
-                'value' => '$data["sale_id"]',
+                //'value' => '$data["sale_id"]',
+                'value' => '$data["deleted_at"]==NULL ? $data["sale_id"] : "<s class=\"orange\">" .  $data["sale_id"] ',
                 'class' => 'yiiwheels.widgets.grid.WhRelationalColumn',
                 'url' => Yii::app()->createUrl('Report/saleInvoiceDetail'),
+                'type' => 'raw'
             ),
             array('name' => 'sale_time',
                 'header' => Yii::t('app', 'Sale Time'),
                 'value' => '$data["sale_time"]',
+            ),
+            array('name' => 'desk_name',
+                'header' => Yii::t('app', 'Table'),
+                'value' => '$data["desk_name"]',
             ),
             array('name' => 'location_name_kh',
                 'header' => Yii::t('app', 'Sold @'),
@@ -73,7 +79,7 @@ class ReportColumn extends CModel
             ),
             array('name' => 'status',
                 'header' => Yii::t('app', 'Status'),
-                'value' => '$data["status"]=="1" ? $data["status"] : "<s class=\"red\">" .  $data["status_f"] ',
+                'value' => '$data["status"]=="1" ? $data["status_f"] : "<s class=\"red\">" .  $data["status_f"] ',
                  'type' => 'raw',
             ),
             array('class' => 'bootstrap.widgets.TbButtonColumn',
@@ -155,6 +161,11 @@ class ReportColumn extends CModel
                 'value' => '$data["deleted_at"] == null ? number_format($data["sub_total"],Common::getDecimalPlace(), ".", ",") : "<s class=\"red\">" .  number_format($data["sub_total"],Common::getDecimalPlace(), ".", ",") ',
                 'htmlOptions'=>array('style' => 'text-align: right;'),
                 'headerHtmlOptions'=>array('style' => 'text-align: right;'),
+                'type' => 'raw'
+            ),
+            array('name'=>'deleted_at',
+                'header'=>Yii::t('app','Deleted @'),
+                'value' => '$data["deleted_at"]',
                 'type' => 'raw'
             ),
         );

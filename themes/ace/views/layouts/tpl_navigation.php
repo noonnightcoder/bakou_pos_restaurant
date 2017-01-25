@@ -46,6 +46,13 @@ if ($location) {
             <!-- #section:basics/navbar.dropdown -->
             <div class="navbar-buttons navbar-header pull-right" role="navigation">
                     <ul class="nav ace-nav">
+
+                        <li class="white">
+                            <a href="<?php echo Yii::app()->createUrl('site/logout'); ?>">
+                                <i class="ace-icon fa fa-power-off"></i>
+                                <?= Yii::t('app','Logout'); ?>
+                            </a>
+                        </li>
                             
                         <!-- #section:basics/navbar.user_menu -->
                         <li class="green">
@@ -76,14 +83,15 @@ if ($location) {
                                                 <?= Yii::t('app','Change Password'); ?>
                                         </a>
                                     </li>
-                                    <li class="divider"></li>
+
+                                    <!--<li class="divider"></li>-->
                                   
-                                    <li>
-                                        <a href="<?php echo Yii::app()->createUrl('site/logout'); ?>">
+                                    <!--<li>
+                                        <a href="<?php /*echo Yii::app()->createUrl('site/logout'); */?>">
                                             <i class="ace-icon fa fa-power-off"></i>
-                                            <?= Yii::t('app','Logout'); ?>
+                                            <?/*= Yii::t('app','Logout'); */?>
                                         </a>
-                                    </li>
+                                    </li>-->
                                   
                                 </ul>
                         </li>

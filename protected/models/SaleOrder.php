@@ -113,23 +113,6 @@ class SaleOrder extends CActiveRecord
     //public function getOrderCart($sale_id, $location_id)
     public function getOrderCart($desk_id,$group_id,$location_id)
     {
-        /*
-        $sql = "SELECT item_number,item_id,`name`,quantity,price,discount_amount discount,
-                total,client_id,desk_id,zone_id,employee_id,qty_in_stock,topping,item_parent_id,category_id
-                FROM v_order_cart
-                WHERE sale_id=:sale_id
-                AND location_id=:location_id
-                AND status=:status
-                AND deleted_at is null
-                ORDER BY path,modified_date desc";
-
-        return Yii::app()->db->createCommand($sql)->queryAll(true, array(
-                ':sale_id' => $sale_id,
-                ':location_id' => $location_id,
-                ':status' => Yii::app()->params['num_one']
-            )
-        );
-        */
 
         $sql = "SELECT item_number,item_id,`name`,quantity,price,discount_amount discount,
                 total,client_id,desk_id,zone_id,employee_id,qty_in_stock,topping,item_parent_id,category_id
@@ -205,22 +188,6 @@ class SaleOrder extends CActiveRecord
         $total = 0;
         $discount_amount = 0;
 
-        /* Get Sale ID by Desk ID every time we focus on that table */
-        /*
-        $sql = "SELECT s.id sale_id,SUM(so.quantity) quantity,SUM(so.total) sub_total,sum(total) - sum(total)*global_discount total,sum(total)*global_discount discount_amount
-                FROM v_sale_order s JOIN v_sale_order_tem_sum so ON so.sale_id = s.id
-                WHERE s.id=:sale_id
-                AND s.location_id=:location_id
-                AND s.status=:status
-                GROUP BY s.id";
-
-        $result = Yii::app()->db->createCommand($sql)->queryAll(true, array(
-            ':sale_id' => $sale_id,
-            ':location_id' => $location_id,
-            ':status' => Yii::app()->params['num_one']
-        ));
-        */
-
         $sql="SELECT sale_id,sum(quantity) quantity,
                     SUM(price*quantity) sub_total,
                     SUM(price*quantity) - (SUM(price*quantity)*IFNULL(so.discount_amount,0)/100) total,
@@ -234,8 +201,9 @@ class SaleOrder extends CActiveRecord
                 AND oc.group_id=:group_id
                 AND oc.location_id=:location_id
                 AND oc.status=:status
-                AND ISNULL(deleted_at)
+                AND ISNULL(oc.deleted_at)
                 GROUP BY sale_id";
+
 
         $result = Yii::app()->db->createCommand($sql)->queryAll(true, array(
             ':desk_id' => $desk_id,

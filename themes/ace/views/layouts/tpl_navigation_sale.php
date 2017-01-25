@@ -22,19 +22,19 @@ $sale_order = new SaleOrder;
 
             <!-- /section:basics/sidebar.mobile.toggle -->
             <div class="navbar-header pull-left">
-                    <!-- #section:basics/navbar.layout.brand -->
-                    <a href="<?php echo Yii::app()->createUrl('dashboard/view') ?>" class="navbar-brand">
-                            <small>
-                                    <i class="fa fa-leaf"></i>
-                                    Ezy Tool
-                            </small>
-                    </a>
+                <!-- #section:basics/navbar.layout.brand -->
+                <a href="<?php echo Yii::app()->createUrl('dashboard/view') ?>" class="navbar-brand">
+                        <small>
+                                <i class="fa fa-leaf"></i>
+                                Ezy Tool
+                        </small>
+                </a>
             </div>
 
             <!-- #section:basics/navbar.dropdown -->
             <div class="navbar-buttons navbar-header pull-right" role="navigation" id="navigation_bar">
                     <ul class="nav ace-nav">
-                        <!-- #section:basics/navbar.user_menu -->
+
                         <!--<li class="grey">
                             <a href="<?php /*echo Yii::app()->createUrl('dashboard/view') */?>">
                                 <i class="glyphicon glyphicon-off"></i>
@@ -42,6 +42,7 @@ $sale_order = new SaleOrder;
                             </a>
                         </li>-->
 
+                        <!-- #section:basics/navbar.user_menu -->
                         <li class="white">
                             <a href="<?php echo Yii::app()->createUrl('site/logout'); ?>">
                                 <i class="ace-icon fa fa-power-off"></i>
@@ -128,14 +129,15 @@ $sale_order = new SaleOrder;
                                         </a>
                                     </li>
 
-                                    <li class="divider"></li>
+                                    <!--<li class="divider"></li>-->
 
-                                    <li>
-                                        <a href="<?php echo Yii::app()->createUrl('site/logout'); ?>">
+                                    <!--<li>
+                                        <a href="<?php /*echo Yii::app()->createUrl('site/logout'); */?>">
                                             <i class="ace-icon fa fa-power-off"></i>
-                                            <?= Yii::t('app','Logout'); ?>
+                                            <?/*= Yii::t('app','Logout'); */?>
                                         </a>
-                                    </li>
+                                    </li>-->
+
                                 </ul>
                         </li>
                     </ul>
