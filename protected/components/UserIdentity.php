@@ -59,7 +59,8 @@ class UserIdentity extends CUserIdentity
             Yii::app()->session['emp_fullname'] = $employee->first_name . ' ' . $employee->last_name;
             
             $emp_location = EmployeeLocation::model()->find('employee_id=:employeeID', array(':employeeID' => (int) $employeeId));
-            if ($emp_location) {
+            
+			if ($emp_location) {
                 //Yii::app()->session['location_id'] = $emp_location->location_id;
                 Yii::app()->getsetSession->setLocationId($emp_location->location_id); 
                  
