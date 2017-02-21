@@ -2,7 +2,6 @@
 /assets/
 /protected/runtime/
 /protected/runtime/application.log
-/protected/config/main.php
 *.log
 /ximages
 /.idea/
