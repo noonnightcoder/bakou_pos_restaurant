@@ -223,7 +223,7 @@ class SaleItemController extends Controller
             } 
             
             if(Yii::app()->orderingCart->SetDisGiftcard($giftcard_id)==0) {
-                Yii::app()->user->setFlash('info', Yii::t('app','Unable to add Gift Card, please review your card number and try again'));
+                Yii::app()->user->setFlash('info', Yii::t('app','Unable to add Gift Card, please review your card number/ expiry date again'));
             }
             
             $this->reload($data);

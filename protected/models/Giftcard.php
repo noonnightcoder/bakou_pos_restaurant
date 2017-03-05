@@ -50,6 +50,8 @@ class Giftcard extends CActiveRecord
 			array('discount_type', 'length', 'max'=>2),
 			array('status', 'length', 'max'=>1),
             array('start_date, end_date ', 'date', 'format'=>array('yyyy-MM-dd'), 'allowEmpty'=>true),
+            array('end_date', 'compare', 'compareAttribute'=>'start_date', 'operator'=>'>=', 'allowEmpty'=>false,
+                'message'=>'{attribute} must be greater than {compareValue} '),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, giftcard_number, discount_amount, discount_type, status, client_id', 'safe', 'on'=>'search'),
