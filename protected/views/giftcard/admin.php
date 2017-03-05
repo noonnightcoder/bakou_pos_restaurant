@@ -6,7 +6,7 @@ $this->breadcrumbs = array(
 
 ?>
 
-<div class="row">
+<div class="row" id="giftcard_cart">
     <div class="col-xs-12 widget-container-col ui-sortable">
 
         <?php $box = $this->beginWidget('yiiwheels.widgets.box.WhBox', array(
@@ -15,7 +15,7 @@ $this->breadcrumbs = array(
             'htmlHeaderOptions' => array('class' => 'widget-header-flat widget-header-small'),
         )); ?>
 
-        <?php //$this->widget('ext.modaldlg.EModalDlg'); ?>
+        <?php $this->widget('ext.modaldlg.EModalDlg'); ?>
 
 
         <div class="page-header">
@@ -63,7 +63,7 @@ $this->breadcrumbs = array(
         );
         ?>
 
-        <?php $this->widget('\TbGridView', array(
+        <?php $this->widget('yiiwheels.widgets.grid.WhGridView', array(
             'id' => 'giftcard-grid',
             'dataProvider' => $model->search(),
             'template' => "{items}\n{summary}\n{pager}",
@@ -135,3 +135,26 @@ $this->breadcrumbs = array(
         <?php $this->endWidget(); ?>
     </div>
 </div>
+
+<?php
+Yii::app()->clientScript->registerScript( 'undoDelete', "
+        jQuery( function($){
+            $('div#giftcard_cart').on('click','a.btn-undodelete',function(e) {
+                e.preventDefault();
+                if (!confirm('Are you sure you want to do undo delete this Item?')) {
+                    return false;
+                }
+                var url=$(this).attr('href');
+                $.ajax({url:url,
+                        type : 'post',
+                        beforeSend: function() { $('.waiting').show(); },
+                        complete: function() { $('.waiting').hide(); },
+                        success : function(data) {
+                            $.fn.yiiGridView.update('giftcard-grid');
+                            return false;
+                          }
+                    });
+                });
+        });
+      ");
+?>

@@ -198,6 +198,7 @@ return array(
         'sale_cancel_status' => '0',
         'sale_complete_status' => '1',
         'sale_suspend_status' => '2',
+        'inactive_status' =>  '0',
         'active_status' =>  '1',
         'num_zero' => 0,
         'num_one' => 1,

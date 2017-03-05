@@ -32,7 +32,7 @@ class GiftcardController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','admin','GetGiftcard'),
+				'actions'=>array('create','update','admin','GetGiftcard','delete','undodelete'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -80,15 +80,7 @@ class GiftcardController extends Controller
 
         if (isset($_POST['Giftcard'])) {
             $model->attributes = $_POST['Giftcard'];
-            if ( $_POST['Giftcard']['year'] !== "" || $_POST['Giftcard']['month'] !== "" || $_POST['Giftcard']['day'] !== "" ) {
-                $dob = $_POST['Giftcard']['year'] . '-' . $_POST['Giftcard']['month'] . '-' . $_POST['Giftcard']['day'];
-                $model->start_date = $dob;
-            }
-
-            if ( $_POST['Giftcard']['e_year'] !== "" || $_POST['Giftcard']['e_month'] !== "" || $_POST['Giftcard']['e_day'] !== "" ) {
-                $dob = $_POST['Giftcard']['e_year'] . '-' . $_POST['Giftcard']['e_month'] . '-' . $_POST['Giftcard']['e_day'];
-                $model->end_date = $dob;
-            }
+            $this->setCardDate($model);
 
 
             if ($model->validate()) {
@@ -156,7 +148,7 @@ class GiftcardController extends Controller
 
         if (Yii::app()->request->isPostRequest) {
 			// we only allow deletion via POST request
-			$this->loadModel($id)->delete();
+            Giftcard::model()->deleteGiftCard($id);
 
 			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 			if (!isset($_GET['ajax'])) {
@@ -166,6 +158,23 @@ class GiftcardController extends Controller
 			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
 		}
 	}
+
+    public function actionUndoDelete($id)
+    {
+        if (Yii::app()->user->checkAccess('giftcard.delete')) {
+            if (Yii::app()->request->isPostRequest) {
+                Giftcard::model()->undodeleteGiftCard($id);
+                // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+                if (!isset($_GET['ajax'])) {
+                    $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+                }
+            } else {
+                throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+            }
+        } else {
+            throw new CHttpException(403, 'You are not authorized to perform this action');
+        }
+    }
 
 	/**
 	 * Lists all models.

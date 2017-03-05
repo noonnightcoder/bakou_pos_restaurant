@@ -207,4 +207,14 @@ class Giftcard extends CActiveRecord
 
         return parent::afterFind();
     }
+
+    public function deleteGiftCard($id)
+    {
+        Giftcard::model()->updateByPk((int)$id, array('status' => Yii::app()->params['str_zero']));
+    }
+
+    public function undodeleteGiftCard($id)
+    {
+        Giftcard::model()->updateByPk((int)$id, array('status' => Yii::app()->params['str_one']));
+    }
 }
