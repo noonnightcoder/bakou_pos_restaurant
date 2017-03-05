@@ -4,18 +4,6 @@ $this->breadcrumbs = array(
     Yii::t('app','Manage'),
 );
 
-Yii::app()->clientScript->registerScript('search', "
-$('.search-button').click(function(){
-	$('.search-form').toggle();
-	return false;
-});
-$('.search-form form').submit(function(){
-	$('#giftcard-grid').yiiGridView('update', {
-		data: $(this).serialize()
-	});
-	return false;
-});
-");
 ?>
 
 <div class="row">
@@ -27,7 +15,7 @@ $('.search-form form').submit(function(){
             'htmlHeaderOptions' => array('class' => 'widget-header-flat widget-header-small'),
         )); ?>
 
-        <?php $this->widget('ext.modaldlg.EModalDlg'); ?>
+        <?php //$this->widget('ext.modaldlg.EModalDlg'); ?>
 
 
         <div class="page-header">
@@ -45,9 +33,6 @@ $('.search-form form').submit(function(){
                     'size' => TbHtml::BUTTON_SIZE_SMALL,
                     'icon' => 'glyphicon-plus white',
                     'url' => $this->createUrl('create'),
-                    'class' => 'update-dialog-open-link',
-                    'data-update-dialog-title' => Yii::t('app', 'New Gift Card'),
-                    'data-refresh-grid-id' => 'giftcard-grid',
                 )); ?>
 
             <?php } ?>
@@ -107,14 +92,11 @@ $('.search-form form').submit(function(){
                         ),
                         'update' => array(
                             'icon' => 'ace-icon fa fa-edit',
-                            'click' => 'updateDialogOpen',
-                            'label' => 'Update Giftcard',
+                            'label' => 'Update Gift Card',
                             'options' => array(
                                 'class' => 'btn btn-xs btn-info',
-                                'data-update-dialog-title' => Yii::t('app', 'Update Giftcard'),
-                                'data-refresh-grid-id' => 'giftcard-grid',
                             ),
-                            'visible'=>'$data->status=="1" && Yii::app()->user->checkAccess("giftcard.update")',
+                            'visible' => '$data->status=="1" && Yii::app()->user->checkAccess("giftcard.update")',
                         ),
                         'delete' => array(
                             'label' => 'Delete',

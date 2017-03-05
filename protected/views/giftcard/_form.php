@@ -29,6 +29,40 @@
             <?php //echo $form->textFieldControlGroup($model,'status',array('span'=>5,'maxlength'=>1)); ?>
 
             <?php //echo $form->textFieldControlGroup($model,'client_id',array('span'=>5)); ?>
+
+            <div class="form-group">
+
+                <label class="col-sm-3 control-label" for="Giftcard_startdate"><?php echo Yii::t('app','Effective From') ?></label>
+
+                <div class="col-sm-9">
+
+                    <?php echo CHtml::activeDropDownList($model, 'day', Common::arrayFactory('day'), array('value' => 1)); ?>
+
+                    <?php echo CHtml::activeDropDownList($model, 'month', Common::arrayFactory('month'), array('prompt' => yii::t('app','Month'))); ?>
+
+                    <?php echo CHtml::activeDropDownList($model, 'year', Common::arrayFactory('exp_year'), array('prompt' => yii::t('app','Year'))); ?>
+
+                    <span class="help-block"> <?php echo $form->error($model,'start_date'); ?> </span>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+
+                <label class="col-sm-3 control-label" for="Giftcard_enddate"><?php echo Yii::t('app','Effective To') ?></label>
+
+                <div class="col-sm-9">
+
+                    <?php echo CHtml::activeDropDownList($model, 'e_day', Common::arrayFactory('day'), array('value' => 1)); ?>
+
+                    <?php echo CHtml::activeDropDownList($model, 'e_month', Common::arrayFactory('month'), array('prompt' => yii::t('app','Month'))); ?>
+
+                    <?php echo CHtml::activeDropDownList($model, 'e_year', Common::arrayFactory('exp_year'), array('prompt' => yii::t('app','Year'))); ?>
+
+                    <span class="help-block"> <?php echo $form->error($model,'end_date'); ?> </span>
+                </div>
+
+            </div>
     
             <?php echo $form->dropDownListControlGroup($model,'client_id', Client::model()->getCustomer(),array('prompt'=>'No Customer')); ?>
 

@@ -166,6 +166,7 @@ class Sale extends CActiveRecord
     
     public function cashierDailySale($employee_id,$location_id)
     {
+        /*
         $sql="SELECT name,SUM(quantity) quantity,SUM(price) price,SUM(quantity*price) total
             FROM (
             SELECT `name`,category_id,SUM(quantity) quantity,SUM(price) price,SUM(quantity*price) total
@@ -179,6 +180,7 @@ class Sale extends CActiveRecord
             ) as t1
             GROUP BY name 
             WITH ROLLUP";
+        */
         
          $sql="SELECT IFNULL(`name`,'Total Food & Beverage') `name`,
                total_flag,quantity,price,total
@@ -187,12 +189,13 @@ class Sale extends CActiveRecord
                    IFNULL(vs.`name`,concat('Total ',c.name)) `name`,
                    IFNULL(vs.`name`,'1') total_flag,
                    -- c.`name` caetory_name,
-                   SUM(quantity) quantity,SUM(price) price,SUM(quantity*price) total
+                   SUM(quantity) quantity,SUM(distinct price) price,SUM(quantity*price) total
                FROM v_sale_cart vs LEFT JOIN category c ON c.id=vs.category_id
                WHERE DATE(sale_time)=CURDATE()
                AND employee_id=:employee_id
                AND location_id=:location_id
                AND status=:status
+               AND ISNULL(deleted_at)
                GROUP BY c.`name`,vs.`name`
                WITH ROLLUP
             ) as t";
@@ -217,7 +220,8 @@ class Sale extends CActiveRecord
               WHERE DATE(sale_time)=CURDATE()
               AND employee_id=:employee_id
               AND location_id=:location_id
-              AND status=:status";
+              AND status=:status
+              AND ISNULL(deleted_at)";
             
             $result=Yii::app()->db->createCommand($sql)->queryAll(true, array(
                     ':employee_id' => $employee_id,

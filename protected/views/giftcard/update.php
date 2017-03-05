@@ -1,23 +1,16 @@
-<?php
-/* @var $this GiftcardController */
-/* @var $model Giftcard */
-?>
 
 <?php
-$this->breadcrumbs=array(
-	'Giftcards'=>array('index'),
-	$model->id=>array('view','id'=>$model->id),
-	'Update',
-);
-
-$this->menu=array(
-	array('label'=>'List Giftcard', 'url'=>array('index')),
-	array('label'=>'Create Giftcard', 'url'=>array('create')),
-	array('label'=>'View Giftcard', 'url'=>array('view', 'id'=>$model->id)),
-	array('label'=>'Manage Giftcard', 'url'=>array('admin')),
+$this->breadcrumbs = array(
+    'Gift Card' => array('admin'),
+    'Update',
 );
 ?>
 
-    <h1>Update Giftcard <?php echo $model->id; ?></h1>
+<?php $box = $this->beginWidget('yiiwheels.widgets.box.WhBox', array(
+    'title' => Yii::t('app', 'Update Gift Card') . ' : ' . '<span class="text-success bigger-120">' . $model->giftcard_number . '</span>',
+    'htmlHeaderOptions' => array('class' => 'widget-header-flat widget-header-small'),
+    'headerIcon' => 'ace-icon fa fa-user',
+    'content' => $this->renderPartial('_form', array('model' => $model), true),
+)); ?>
 
-<?php $this->renderPartial('_form', array('model'=>$model)); ?>
+<?php $this->endWidget(); ?>

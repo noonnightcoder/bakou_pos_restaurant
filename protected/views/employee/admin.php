@@ -42,12 +42,12 @@
 
             <?php if (Yii::app()->user->checkAccess('employee.create')) { ?>
 
-            <?php echo TbHtml::linkButton(Yii::t('app', 'Add New'), array(
-                'color' => TbHtml::BUTTON_COLOR_PRIMARY,
-                'size' => TbHtml::BUTTON_SIZE_SMALL,
-                'icon' => 'glyphicon-plus white',
-                'url' => $this->createUrl('create'),
-            )); ?>
+                <?php echo TbHtml::linkButton(Yii::t('app', 'Add New'), array(
+                    'color' => TbHtml::BUTTON_COLOR_PRIMARY,
+                    'size' => TbHtml::BUTTON_SIZE_SMALL,
+                    'icon' => 'glyphicon-plus white',
+                    'url' => $this->createUrl('create'),
+                )); ?>
 
             <?php } ?>
 

@@ -333,8 +333,8 @@ class SaleItemController extends Controller
     {
         $this->layout = '//layouts/column_receipt';
               
-        $data['employee_id'] = Yii::app()->session['employeeid'];
-        $data['location_id'] = Yii::app()->getsetSession->getLocationId();
+        $data['employee_id'] = Common::getEmployeeID();
+        $data['location_id'] = Common::getCurLocationID();
         $data['items'] = Sale::model()->cashierDailySale($data['employee_id'],$data['location_id']);
         $data['totals'] = Sale::model()->cashierDailySaleTotal($data['employee_id'], $data['location_id']);
         $data['transaction_date'] = date('d-M-Y');

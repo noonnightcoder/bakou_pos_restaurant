@@ -1,11 +1,6 @@
 <?php
-/* @var $this GiftcardController */
-/* @var $model Giftcard */
-?>
-
-<?php
 $this->breadcrumbs=array(
-	'Giftcards'=>array('index'),
+	'Giftcard'=>array('Admin'),
 	'Create',
 );
 
@@ -15,6 +10,13 @@ $this->menu=array(
 );
 ?>
 
-<h1>Create Giftcard</h1>
 
-<?php $this->renderPartial('_form', array('model'=>$model)); ?>
+<?php $box = $this->beginWidget('yiiwheels.widgets.box.WhBox', array(
+    'title' => Yii::t('app', 'Create '),
+    'htmlHeaderOptions' => array('class' => 'widget-header-flat widget-header-small'),
+    'headerIcon' => 'ace-icon fa fa-user',
+    'content' => $this->renderPartial('_form', array('model' => $model), true),
+)); ?>
+
+<?php $this->endWidget(); ?>
+

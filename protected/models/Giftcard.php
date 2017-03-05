@@ -17,6 +17,12 @@
 class Giftcard extends CActiveRecord
 {
     public $giftcard_archived;
+    public $day; //Day : DD
+    public $month; // Month : MM
+    public $year; // Year - YYYY
+    public $e_day; //Day : DD
+    public $e_month; // Month : MM
+    public $e_year; // Year - YYYY
 
     const _active_status='1';
     
@@ -37,11 +43,13 @@ class Giftcard extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('giftcard_number, discount_amount', 'required'),
+            array('giftcard_number', 'unique'),
 			array('client_id', 'numerical', 'integerOnly'=>true),
 			array('giftcard_number', 'length', 'max'=>60),
 			array('discount_amount', 'length', 'max'=>15),
 			array('discount_type', 'length', 'max'=>2),
 			array('status', 'length', 'max'=>1),
+            array('start_date, end_date ', 'date', 'format'=>array('yyyy-MM-dd'), 'allowEmpty'=>true),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, giftcard_number, discount_amount, discount_type, status, client_id', 'safe', 'on'=>'search'),
@@ -176,5 +184,25 @@ class Giftcard extends CActiveRecord
         }
 
         return $suggest;
+    }
+
+    protected function afterFind()
+    {
+        if ($this->start_date !== null) {
+            $start_date = strtotime($this->start_date);
+            $this->day = date('d', $start_date);
+            $this->month = date('m', $start_date);
+            $this->year = date('Y', $start_date);
+
+        }
+
+        if ($this->end_date !== null) {
+            $end_date = strtotime($this->end_date);
+            $this->e_day = date('d', $end_date);
+            $this->e_month = date('m', $end_date);
+            $this->e_year = date('Y', $end_date);
+        }
+
+        return parent::afterFind();
     }
 }

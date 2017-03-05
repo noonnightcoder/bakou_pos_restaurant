@@ -80,30 +80,27 @@ class GiftcardController extends Controller
 
         if (isset($_POST['Giftcard'])) {
             $model->attributes = $_POST['Giftcard'];
+            if ( $_POST['Giftcard']['year'] !== "" || $_POST['Giftcard']['month'] !== "" || $_POST['Giftcard']['day'] !== "" ) {
+                $dob = $_POST['Giftcard']['year'] . '-' . $_POST['Giftcard']['month'] . '-' . $_POST['Giftcard']['day'];
+                $model->start_date = $dob;
+            }
+
+            if ( $_POST['Giftcard']['e_year'] !== "" || $_POST['Giftcard']['e_month'] !== "" || $_POST['Giftcard']['e_day'] !== "" ) {
+                $dob = $_POST['Giftcard']['e_year'] . '-' . $_POST['Giftcard']['e_month'] . '-' . $_POST['Giftcard']['e_day'];
+                $model->end_date = $dob;
+            }
+
+
             if ($model->validate()) {
                 if ($model->save()) {
-                    Yii::app()->clientScript->scriptMap['jquery.js'] = false;
-                    echo CJSON::encode(array(
-                        'status' => 'success',
-                        'div' => "<div class=alert alert-info fade in>Successfully added ! </div>",
-                    ));
-                    Yii::app()->end();
+                    Yii::app()->user->setFlash('success', '<strong>Well done!</strong> successfully saved.');
+                    $this->redirect(array('create'));
                 }
             }
         }
 
-        if (Yii::app()->request->isAjaxRequest) {
-            Yii::app()->clientScript->scriptMap['*.js'] = false;
+        $this->render('create', array('model' => $model));
 
-            echo CJSON::encode(array(
-                'status' => 'render',
-                'div' => $this->renderPartial('_form', array('model' => $model), true, false),
-            ));
-
-            Yii::app()->end();
-        } else {
-            $this->render('create', array('model' => $model));
-        }
 
     }
 
@@ -116,47 +113,33 @@ class GiftcardController extends Controller
     {
         $model = $this->loadModel($id);
 
-
         if (!Yii::app()->user->checkAccess('giftcard.update')) {
             throw new CHttpException(403, 'You are not authorized to perform this action');
         }
 
         if (isset($_POST['Giftcard'])) {
             $model->attributes = $_POST['Giftcard'];
+            $this->setCardDate($model);
 
             if ($model->validate()) {
                 $transaction = $model->dbConnection->beginTransaction();
                 try {
                     if ($model->save()) {
                         $transaction->commit();
-                        Yii::app()->clientScript->scriptMap['jquery.js'] = false;
-                        echo CJSON::encode(array(
-                            'status' => 'success',
-                            'div' => "<div class=alert alert-info fade in> Successfully updated ! </div>",
-                        ));
-                        Yii::app()->end();
+                        Yii::app()->user->setFlash('success', '<strong>Well done!</strong> successfully saved.');
+                        $this->redirect(array('admin'));
 
                     }
                 } catch (Exception $e) {
                     $transaction->rollback();
-                    print_r($e);
+                    Yii::app()->user->setFlash('error', '<strong>Oh snap!</strong> Change a few things up and try submitting again.' . $e);
                 }
             }
 
         }
 
-        if (Yii::app()->request->isAjaxRequest) {
-            Yii::app()->clientScript->scriptMap['*.js'] = false;
+        $this->render('update', array('model' => $model));
 
-            echo CJSON::encode(array(
-                'status' => 'render',
-                'div' => $this->renderPartial('_form', array('model' => $model), true, false),
-            ));
-
-            Yii::app()->end();
-        } else {
-            $this->render('update', array('model' => $model));
-        }
 
     }
 
@@ -251,14 +234,27 @@ class GiftcardController extends Controller
 			Yii::app()->end();
 		}
 	}
-        
-        public function actionGetGiftcard() { 
-            if (isset($_GET['term'])) {
-                 $term = trim($_GET['term']);
-                 $ret['results'] = Giftcard::getGiftcard($term); 
-                 echo CJSON::encode($ret);
-                 Yii::app()->end();
 
-            }
+    public function actionGetGiftcard()
+    {
+        if (isset($_GET['term'])) {
+            $term = trim($_GET['term']);
+            $ret['results'] = Giftcard::getGiftcard($term);
+            echo CJSON::encode($ret);
+            Yii::app()->end();
+
         }
+    }
+
+    protected function setCardDate($model) {
+        if ( $_POST['Giftcard']['year'] !== "" || $_POST['Giftcard']['month'] !== "" || $_POST['Giftcard']['day'] !== "" ) {
+            $dob = $_POST['Giftcard']['year'] . '-' . $_POST['Giftcard']['month'] . '-' . $_POST['Giftcard']['day'];
+            $model->start_date = $dob;
+        }
+
+        if ( $_POST['Giftcard']['e_year'] !== "" || $_POST['Giftcard']['e_month'] !== "" || $_POST['Giftcard']['e_day'] !== "" ) {
+            $dob = $_POST['Giftcard']['e_year'] . '-' . $_POST['Giftcard']['e_month'] . '-' . $_POST['Giftcard']['e_day'];
+            $model->end_date = $dob;
+        }
+    }
 }

@@ -121,6 +121,7 @@ Class Common
                 '12' => Yii::t('app','December'),
             ),
             'year' => array_combine(range(date("Y"), 1910), range(date("Y"), 1910)),  //http://stackoverflow.com/questions/2807394/php-years-array
+            'exp_year' => array_combine(range(date("Y")-2, 2050), range(date("Y")-2, 2050)),
             'page_size' => array(
                 10 => 10,
                 20 => 20,
