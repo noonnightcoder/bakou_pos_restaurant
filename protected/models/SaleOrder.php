@@ -385,38 +385,6 @@ class SaleOrder extends CActiveRecord
     public function setDisGiftcard($giftcard_id)
     {
 
-        /*
-        $model = Giftcard::model()->findByPk($giftcard_id);
-
-        if (!$model) {
-            $model = Giftcard::model()->find('giftcard_number=:giftcard_number',
-                array(':giftcard_number' => $giftcard_id));
-        }
-
-        if (!$model) {
-            return false;
-        }
-
-        $discount_amount = $model->discount_amount;
-        $giftcard_id = $model->id;
-
-        $sql = "update sale_order
-                set giftcard_id=:giftcard_id,discount_amount=:discount_amount
-                where desk_id=:desk_id and group_id=:group_id and location_id=:location_id
-                and status=:status";
-
-        $command = Yii::app()->db->createCommand($sql);
-        $command->bindParam(":desk_id", $desk_id, PDO::PARAM_INT);
-        $command->bindParam(":group_id", $group_id, PDO::PARAM_INT);
-        $command->bindParam(":location_id", $location_id, PDO::PARAM_INT);
-        $command->bindParam(":giftcard_id", $giftcard_id, PDO::PARAM_INT);
-        $command->bindParam(":discount_amount", $discount_amount);
-        $command->bindParam(":status", Yii::app()->params['num_one']);
-        $command->execute();
-
-        return true;
-        */
-
         $sql = "SELECT func_giftcard_set(:desk_id,:group_id,:location_id,:giftcard_id,:employee_id) result_id";
         $result = Yii::app()->db->createCommand($sql)->queryAll(true,
             array(

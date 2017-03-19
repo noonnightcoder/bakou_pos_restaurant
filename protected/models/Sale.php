@@ -166,25 +166,9 @@ class Sale extends CActiveRecord
     
     public function cashierDailySale($employee_id,$location_id)
     {
-        /*
-        $sql="SELECT name,SUM(quantity) quantity,SUM(price) price,SUM(quantity*price) total
-            FROM (
-            SELECT `name`,category_id,SUM(quantity) quantity,SUM(price) price,SUM(quantity*price) total
-            FROM v_sale_cart
-            WHERE DATE(sale_time)=CURDATE()
-            AND employee_id=:employee_id
-            AND location_id=:location_id
-            AND status=:status
-            GROUP BY `name`,category_id
-            ORDER BY quantity,category_id
-            ) as t1
-            GROUP BY name 
-            WITH ROLLUP";
-        */
-        
          $sql="SELECT IFNULL(`name`,'Total Food & Beverage') `name`,
                total_flag,quantity,price,total
-             FROM (
+               FROM (
                 SELECT 
                    IFNULL(vs.`name`,concat('Total ',c.name)) `name`,
                    IFNULL(vs.`name`,'1') total_flag,
@@ -194,12 +178,32 @@ class Sale extends CActiveRecord
                WHERE DATE(sale_time)=CURDATE()
                AND employee_id=:employee_id
                AND location_id=:location_id
-               AND status=:status
+               AND `status`=:status
                AND ISNULL(deleted_at)
                GROUP BY c.`name`,vs.`name`
                WITH ROLLUP
             ) as t";
-           
+
+         $sql="SELECT IFNULL(`name`,'Total Food & Beverage') `name`,
+                total_flag,quantity,price,sub_total,discount_amount,total
+               FROM(SELECT IFNULL(vs.`name`,CONCAT('Total ',c.name)) `name`,
+                       IFNULL(vs.`name`,'1') total_flag,
+                       -- c.`name` caetory_name,
+                       SUM(quantity) quantity,
+                       SUM(DISTINCT price) price,
+                       SUM(quantity*price) sub_total,
+                       SUM(quantity*price*discount_amount/100) discount_amount,
+                       SUM(quantity*price)-SUM(quantity*price*discount_amount/100) total
+                     FROM v_sale_cart vs LEFT JOIN category c ON c.id=vs.category_id
+                     WHERE DATE(sale_time)=CURDATE()
+                     AND employee_id=38
+                     AND location_id=4
+                     AND `status`='1'
+                     AND ISNULL(deleted_at)
+                     GROUP BY c.`name`,vs.`name`
+                    WITH ROLLUP
+                 ) AS t";
+
         return Yii::app()->db->createCommand($sql)->queryAll(true,array(
                 ':employee_id' => $employee_id,
                 ':location_id' => $location_id,
@@ -213,15 +217,15 @@ class Sale extends CActiveRecord
             $total=0;
             $discount_amount=0;
             
-            $sql="SELECT SUM(sub_total) sub_total,
+           /* $sql="SELECT SUM(sub_total) sub_total,
                     SUM(sub_total*discount_amount/100) discount_amount,
                     SUM(sub_total)-SUM(sub_total*discount_amount/100) total
-              FROM sale
+              FROM v_sale_cart
               WHERE DATE(sale_time)=CURDATE()
               AND employee_id=:employee_id
               AND location_id=:location_id
-              AND status=:status
-              AND ISNULL(deleted_at)";
+              AND `status`=:status
+              AND ISNULL(deleted_at)";*/
             
             $result=Yii::app()->db->createCommand($sql)->queryAll(true, array(
                     ':employee_id' => $employee_id,

@@ -336,7 +336,7 @@ class SaleItemController extends Controller
         $data['employee_id'] = Common::getEmployeeID();
         $data['location_id'] = Common::getCurLocationID();
         $data['items'] = Sale::model()->cashierDailySale($data['employee_id'],$data['location_id']);
-        $data['totals'] = Sale::model()->cashierDailySaleTotal($data['employee_id'], $data['location_id']);
+        //$data['totals'] = Sale::model()->cashierDailySaleTotal($data['employee_id'], $data['location_id']);
         $data['transaction_date'] = date('d-M-Y');
        
         if ($data['employee_id']) {
@@ -349,7 +349,7 @@ class SaleItemController extends Controller
             $this->reload($data);
         } else {
             Yii::app()->session->close();
-            $this->render('touchscreen/_receipt_closesale', $data);
+            $this->render('partial/_receipt_close_sale', $data);
         }
 
     }
