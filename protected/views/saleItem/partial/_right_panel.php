@@ -11,12 +11,13 @@
 
             <div class="widget-toolbar">
 
+
                 <?php echo TbHtml::linkButton(Yii::t('app', 'Close Register'), array(
                     'color' => TbHtml::BUTTON_COLOR_DEFAULT,
                     'size' => TbHtml::BUTTON_SIZE_MINI,
                     'icon' => 'glyphicon-print white',
                     'url' => Yii::app()->createUrl('SaleItem/PrintCloseSale'),
-                    'class' => 'suspend-sale',
+                    'class' => 'close-register',
                     'title' => Yii::t('app', 'Print Report for Closing Sale'),
                 )); ?>
 
@@ -66,6 +67,7 @@
                 <?php } ?>
 
             </div>
+
         </div>
 
         <div class="widget-body">

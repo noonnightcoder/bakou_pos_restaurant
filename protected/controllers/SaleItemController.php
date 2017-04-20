@@ -346,6 +346,7 @@ class SaleItemController extends Controller
         
         if (count($data['items']) == 0) {
             $data['warning'] = Yii::t('app','There is no sale transaction today.');
+            Yii::app()->user->setFlash('warning', Yii::t('app', "There is no sale transaction today."));
             $this->reload($data);
         } else {
             Yii::app()->session->close();
@@ -487,7 +488,7 @@ class SaleItemController extends Controller
         $this->reload();
     }
 
-     public function actionMergeTable()
+    public function actionMergeTable()
     {
         $tables=$_POST['tables'];
         print_r($tables);

@@ -166,6 +166,28 @@ class Sale extends CActiveRecord
     
     public function cashierDailySale($employee_id,$location_id)
     {
+        /*
+        $sql = "SELECT IFNULL(`name`,'Total Food & Beverage') `name`,
+                 total_flag,quantity,price,sub_total,discount_amount,total
+                FROM (SELECT IFNULL(vs.`name`,CONCAT('Total ',c.name)) `name`,
+                       IFNULL(vs.`name`,'1') total_flag,
+                       -- c.`name` caetory_name,
+                       SUM(quantity) quantity,
+                       SUM(DISTINCT price) price,
+                       SUM(quantity*price) sub_total,
+                       SUM(quantity*price*discount_amount/100) discount_amount,
+                       SUM(quantity*price)-SUM(quantity*price*discount_amount/100) total
+                     FROM v_order_cart vs LEFT JOIN category c ON c.id=vs.category_id
+                     WHERE DATE(sale_time) = CURDATE()
+                     AND employee_id = :employee_id
+                     AND location_id = :location_id
+                     AND `status` = :status
+                     AND ISNULL(deleted_at)
+                     GROUP BY c.`name`,vs.`name`
+                    WITH ROLLUP
+                 ) AS t";
+         */
+
          $sql="SELECT IFNULL(`name`,'Total Food & Beverage') `name`,
                total_flag,quantity,price,total
                FROM (
@@ -175,34 +197,14 @@ class Sale extends CActiveRecord
                    -- c.`name` caetory_name,
                    SUM(quantity) quantity,SUM(distinct price) price,SUM(quantity*price) total
                FROM v_sale_cart vs LEFT JOIN category c ON c.id=vs.category_id
-               WHERE DATE(sale_time)=CURDATE()
-               AND employee_id=:employee_id
+               WHERE DATE(sale_time)= CURDATE()
                AND location_id=:location_id
+               AND updated_by=:employee_id
                AND `status`=:status
                AND ISNULL(deleted_at)
                GROUP BY c.`name`,vs.`name`
                WITH ROLLUP
             ) as t";
-
-         $sql="SELECT IFNULL(`name`,'Total Food & Beverage') `name`,
-                total_flag,quantity,price,sub_total,discount_amount,total
-               FROM(SELECT IFNULL(vs.`name`,CONCAT('Total ',c.name)) `name`,
-                       IFNULL(vs.`name`,'1') total_flag,
-                       -- c.`name` caetory_name,
-                       SUM(quantity) quantity,
-                       SUM(DISTINCT price) price,
-                       SUM(quantity*price) sub_total,
-                       SUM(quantity*price*discount_amount/100) discount_amount,
-                       SUM(quantity*price)-SUM(quantity*price*discount_amount/100) total
-                     FROM v_sale_cart vs LEFT JOIN category c ON c.id=vs.category_id
-                     WHERE DATE(sale_time)=CURDATE()
-                     AND employee_id=38
-                     AND location_id=4
-                     AND `status`='1'
-                     AND ISNULL(deleted_at)
-                     GROUP BY c.`name`,vs.`name`
-                    WITH ROLLUP
-                 ) AS t";
 
         return Yii::app()->db->createCommand($sql)->queryAll(true,array(
                 ':employee_id' => $employee_id,

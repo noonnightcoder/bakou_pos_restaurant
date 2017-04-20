@@ -9,7 +9,6 @@
 }
 
 #receipt_items td {
-  //position: relative;
   padding: 3px;
 }      
 </style>
@@ -29,8 +28,8 @@
                 <th style='border-top:2px solid #000000; border-bottom:2px solid #000000;'><?php echo Yii::t('app','Name'); ?></th>
                 <th class="center" style='border-top:2px solid #000000; border-bottom:2px solid #000000;'><?php echo TbHtml::encode(Yii::t('app','Qty')); ?></th>
                 <th class="center" style='border-top:2px solid #000000; border-bottom:2px solid #000000;'><?php echo TbHtml::encode(Yii::t('app','Price')); ?></th>
-                <th class="center" style='border-top:2px solid #000000; border-bottom:2px solid #000000;'><?php echo TbHtml::encode(Yii::t('app','Sub Total')); ?></th>
-                <th class="center" style='border-top:2px solid #000000; border-bottom:2px solid #000000;'><?php echo TbHtml::encode(Yii::t('app','Discount')); ?></th>
+                <!--<th class="center" style='border-top:2px solid #000000; border-bottom:2px solid #000000;'><?php /*echo TbHtml::encode(Yii::t('app','Sub Total')); */?></th>-->
+                <!--<th class="center" style='border-top:2px solid #000000; border-bottom:2px solid #000000;'><?php /*echo TbHtml::encode(Yii::t('app','Discount')); */?></th>-->
                 <th class="text-right" style='border-top:2px solid #000000; border-bottom:2px solid #000000;'><?php echo TbHtml::encode(Yii::t('app','Total')); ?></th>
             </tr>
         </thead>
@@ -48,8 +47,6 @@
                             <?php echo TbHtml::b($item['quantity']); ?>
                         </td>
                         <td class="center"></td>
-                        <td class="center"></td>
-                        <td class="center"></td>
                         <td class="text-right">
                             <?php echo TbHtml::b(number_format($item['total'],Common::getDecimalPlace())); ?>
                         </td>
@@ -60,12 +57,12 @@
                         <td class="center">
                             <?php echo number_format($item['price'],Common::getDecimalPlace()); ?>
                         </td>
-                        <td class="center">
-                            <?php echo number_format($item['sub_total'],Common::getDecimalPlace()); ?>
-                        </td>
-                        <td class="center">
-                            <?php echo number_format($item['discount_amount'],Common::getDecimalPlace()); ?>
-                        </td>
+                        <!--<td class="center">
+                            <?php /*echo number_format($item['sub_total'],Common::getDecimalPlace()); */?>
+                        </td>-->
+                        <!--<td class="center">
+                            <?php /*echo number_format($item['discount_amount'],Common::getDecimalPlace()); */?>
+                        </td>-->
                         <td class="text-right">
                             <?php echo number_format($item['total'],Common::getDecimalPlace()); ?>
                         </td>
@@ -96,10 +93,9 @@
 </div>
 
 <script>
-$(window).bind("load", function() {
-    //setTimeout(window.location.href='index',5000);
-    //window.print();
-    window.close();
-    return true;
-});
+    $(window).bind("load", function() {
+        window.print();
+        window.close();
+        return true;
+    });
 </script>

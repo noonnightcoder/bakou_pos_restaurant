@@ -187,7 +187,6 @@ Yii::app()->clientScript->registerScript( 'confirmOrder', "
       ");
 ?>
 
-
 <script>
     
 var submitting = false;  
@@ -216,7 +215,7 @@ $(document).ready(function()
         $('#giftcard_selected_form').ajaxSubmit({target: "#register_container", beforeSubmit: salesBeforeSubmit, success : giftcardScannedSuccess});
         //$('#SaleItem_giftcard_id').focus();
     });
-        
+
 });
 
 function salesBeforeSubmit(formData, jqForm, options)
@@ -228,14 +227,6 @@ function salesBeforeSubmit(formData, jqForm, options)
     submitting = true;
     $('.waiting').show();
 }   
-
-/*
-function itemScannedSuccess(responseText, statusText, xhr, $form)
-{
-    //setTimeout(function(){$('#SaleItem_item_id').focus();}, 10);
-    console.log(statusText);
-} 
-*/
 
 
 // really thanks to this http://www.stefanolocati.it/blog/?p=1413

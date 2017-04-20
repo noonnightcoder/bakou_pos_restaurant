@@ -32,7 +32,7 @@
 
             <div class="form-group">
 
-                <label class="col-sm-3 control-label" for="Giftcard_startdate"><?php echo Yii::t('app','Effective From') ?></label>
+                <label class="col-sm-3 control-label" for="Giftcard_startdate"><?php echo Yii::t('app','Start Date') ?></label>
 
                 <div class="col-sm-9">
 
@@ -49,7 +49,7 @@
 
             <div class="form-group">
 
-                <label class="col-sm-3 control-label" for="Giftcard_enddate"><?php echo Yii::t('app','Effective To') ?></label>
+                <label class="col-sm-3 control-label" for="Giftcard_enddate"><?php echo Yii::t('app','End Date') ?></label>
 
                 <div class="col-sm-9">
 
