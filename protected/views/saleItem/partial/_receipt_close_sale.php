@@ -94,6 +94,7 @@
 
 <script>
     $(window).bind("load", function() {
+        setTimeout(window.location.href='../site/Logout',5000);
         window.print();
         window.close();
         return true;

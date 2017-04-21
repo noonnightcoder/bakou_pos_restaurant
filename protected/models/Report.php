@@ -107,8 +107,7 @@ class Report extends CFormModel
                     WHERE location_id=:location_id
                     AND sale_time>=str_to_date(:from_date,'%d-%m-%Y')
                     AND sale_time<=date_add(str_to_date(:to_date,'%d-%m-%Y'),INTERVAL 1 DAY)
-                    ORDER By sale_time desc";
-
+                    ORDER BY sale_time desc";
 
             $rawData = Yii::app()->db->createCommand($sql)->queryAll(true, array(
                 ':from_date' => $this->from_date,
