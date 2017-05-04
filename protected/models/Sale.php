@@ -188,8 +188,7 @@ class Sale extends CActiveRecord
                  ) AS t";
          */
 
-         $sql="SELECT IFNULL(`name`,'Total Food & Beverage') `name`,
-               total_flag,quantity,price,total
+         $sql="SELECT IFNULL(`name`,'Total Food & Beverage') `name`,total_flag,quantity,price,total
                FROM (
                 SELECT 
                    IFNULL(vs.`name`,concat('Total ',c.name)) `name`,
@@ -206,9 +205,26 @@ class Sale extends CActiveRecord
                WITH ROLLUP
             ) as t";
 
+         $sql="SELECT IFNULL(`name`,'Total Food & Beverage') `name`,total_flag,quantity,price,sub_total,discount_amount,total
+                FROM (SELECT IFNULL(vs.`name`,CONCAT('Total ',c.name)) `name`,
+                       IFNULL(vs.`name`,'1') total_flag,
+                       SUM(quantity*price*discount_amount_total/100) discount_amount,
+                       SUM(quantity) quantity,SUM(DISTINCT price) price,
+                       SUM(quantity*price) sub_total,
+                       SUM(quantity*price)- SUM(quantity*price*discount_amount_total/100) total
+                  FROM v_sale_cart vs LEFT JOIN category c ON c.id=vs.category_id
+                  WHERE location_id=:location_id
+                  AND DATE(sale_time)= CURDATE()
+                  AND updated_by=:employee_id
+                  AND `status`=:status
+                  AND ISNULL(deleted_at)
+                  GROUP BY c.`name`,vs.`name`
+                  WITH ROLLUP
+                ) AS t";
+
         return Yii::app()->db->createCommand($sql)->queryAll(true,array(
-                ':employee_id' => $employee_id,
                 ':location_id' => $location_id,
+                ':employee_id' => $employee_id,
                 ':status' => $this->sale_complete_status)
         );        
     }

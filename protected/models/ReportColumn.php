@@ -263,4 +263,45 @@ class ReportColumn extends CModel
         );
     }
 
+    public static function getSaleDailyBySaleRepColumns() {
+        return array(
+            array('name'=>'name',
+                'header'=>Yii::t('app','Name'),
+                'value'=>'$data["name"]',
+            ),
+            array('name'=>'quantity',
+                'header'=>Yii::t('app','QTY'),
+                'htmlOptions'=>array('style' => 'text-align: right;'),
+                'headerHtmlOptions'=>array('style' => 'text-align: right;'),
+                'value' =>'number_format($data["quantity"],Common::getDecimalPlace(), ".", ",")',
+                //'footer'=>number_format($report->saleDailyTotals()[0],Common::getDecimalPlace(), ".", ","),
+                //'footerHtmlOptions'=>array('style' => 'text-align: right;'),
+            ),
+            array('name'=>'price',
+                'header'=>Yii::t('app','Price'),
+                'htmlOptions'=>array('style' => 'text-align: right;'),
+                'headerHtmlOptions'=>array('style' => 'text-align: right;'),
+                'value' =>'number_format($data["price"],Common::getDecimalPlace(), ".", ",")',
+            ),
+            array('name'=>'sub_total',
+                'header'=>Yii::t('app','Sub Total'),
+                'htmlOptions'=>array('style' => 'text-align: right;'),
+                'headerHtmlOptions'=>array('style' => 'text-align: right;'),
+                'value' =>'number_format($data["sub_total"],Common::getDecimalPlace(), ".", ",")',
+            ),
+            array('name'=>'discount',
+                'header'=>Yii::t('app','Discount'),
+                'htmlOptions'=>array('style' => 'text-align: right;'),
+                'headerHtmlOptions'=>array('style' => 'text-align: right;'),
+                'value' =>'number_format($data["discount_amount"],Common::getDecimalPlace(), ".", ",")',
+            ),
+            array('name'=>'total',
+                'header'=>Yii::t('app','Total'),
+                'htmlOptions'=>array('style' => 'text-align: right;'),
+                'headerHtmlOptions'=>array('style' => 'text-align: right;'),
+                'value' =>'number_format($data["total"],Common::getDecimalPlace(), ".", ",")',
+            ),
+        );
+    }
+
 }

@@ -36,7 +36,7 @@ class ReportController extends Controller
                     'SaleInvoice', 'SaleInvoiceAlert', 'SaleDaily', 'SaleReportTab', 'SaleSummary',
                     'Payment', 'TopProduct', 'SaleHourly', 'Inventory', 'ItemExpiry', 'DailyProfit',
                     'ItemInactive', 'Transaction', 'TransactionItem', 'ItemAsset', 'SaleItemSummary',
-                    'UserLogSummary', 'SaleInvoiceDetail',
+                    'UserLogSummary', 'SaleInvoiceDetail','SaleDailyBySaleRep'
                 ),
                 'users' => array('@'),
             ),
@@ -104,6 +104,22 @@ class ReportController extends Controller
         $this->renderView($data);
     }
 
+    public function actionSaleDailyBySaleRep()
+    {
+
+        $this->canViewReport();
+
+        $grid_id = 'rpt-sale-daily-by-salerep-grid';
+        $title = 'Close Register';
+
+        $data = $this->commonData($grid_id,$title);
+
+        $data['grid_columns'] = ReportColumn::getSaleDailyBySaleRepColumns();
+        $data['data_provider'] = $data['report']->saleDailyBySaleRep();
+
+        $this->renderView($data);
+    }
+
     public function actionSaleItemSummary()
     {
         $this->canViewReport();
@@ -135,8 +151,6 @@ class ReportController extends Controller
         $this->renderView($data);
     }
 
-    
-    
     public function actionSaleInvoiceItem($sale_id, $employee_id)
     {
         $model = new SaleItem('search');
@@ -339,9 +353,6 @@ class ReportController extends Controller
         }
     }
 
-    /**
-     * Manages all models.
-     */
     public function actionPayment()
     {
         $report = new Report;
@@ -376,9 +387,6 @@ class ReportController extends Controller
         }
     }
 
-    /**
-     * Daily Profit
-     */
     public function actionDailyProfit()
     {
         $report = new Report;
@@ -406,9 +414,6 @@ class ReportController extends Controller
         }
     }
 
-    /**
-     * Top Product
-     */
     public function actionTopProduct()
     {
         $report = new Report;
@@ -513,9 +518,7 @@ class ReportController extends Controller
         $report = new Report;
         $this->render('item_asset', array('report' => $report));
     }
-    
 
-    
     public function actionUserLogDt($employee_id,$full_name)
     {
         $model = new UserLog('search');
@@ -546,6 +549,7 @@ class ReportController extends Controller
             $this->render('user_log_dt', array('model' => $model,'employee_id' => $employee_id,'full_name' => $full_name,));
         }
     }
+
 
 
     /**

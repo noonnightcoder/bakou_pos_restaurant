@@ -243,6 +243,44 @@ class Report extends CFormModel
         return $dataProvider; // Return as array object
     }
 
+    public function saleDailyBySaleRep()
+    {
+        $sql="SELECT IFNULL(`name`,'Total Food & Beverage') `name`,total_flag,quantity,price,sub_total,discount_amount,total
+                FROM (SELECT IFNULL(vs.`name`,CONCAT('Total ',c.name)) `name`,
+                       IFNULL(vs.`name`,'1') total_flag,
+                       SUM(quantity*price*discount_amount_total/100) discount_amount,
+                       SUM(quantity) quantity,SUM(DISTINCT price) price,
+                       SUM(quantity*price) sub_total,
+                       SUM(quantity*price)- SUM(quantity*price*discount_amount_total/100) total
+                  FROM v_sale_cart vs LEFT JOIN category c ON c.id=vs.category_id
+                  WHERE location_id=:location_id
+                  AND DATE(sale_time)= CURDATE()
+                  AND updated_by=:employee_id
+                  AND `status`=:status
+                  AND ISNULL(deleted_at)
+                  GROUP BY c.`name`,vs.`name`
+                  WITH ROLLUP
+                ) AS t";
+
+        $rawData = Yii::app()->db->createCommand($sql)->queryAll(true, array(
+            ':location_id' => $this->location_id,
+            ':status' => Yii::app()->params['sale_complete_status'],
+            ':employee_id' => Common::getEmployeeID()
+        ));
+
+        $dataProvider = new CArrayDataProvider($rawData, array(
+            'keyField' => 'name',
+            'sort' => array(
+                'attributes' => array(
+                    'sale_time',
+                ),
+            ),
+            'pagination' => false,
+        ));
+
+        return $dataProvider; // Return as array object
+    }
+
     public function userLogSummary()
     {
         $sql = "SELECT ul.`employee_id`,

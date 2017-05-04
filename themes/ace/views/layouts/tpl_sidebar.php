@@ -39,6 +39,9 @@ $this->widget('bootstrap.widgets.TbNav', array(
                     array('label'=>Yii::t('app','Sale Item Summary'),'icon'=> 'menu-icon fa fa-caret-right', 'url'=>Yii::app()->urlManager->createUrl('report/SaleItemSummary'),
                         'active'=>$this->id .'/'. $this->action->id =='report/SaleItemSummary'
                     ),
+                    array('label'=>Yii::t('app','Close Register'),'icon'=> 'menu-icon fa fa-caret-right', 'url'=>Yii::app()->urlManager->createUrl('report/SaleDailyBySaleRep'),
+                        'active'=>$this->id .'/'. $this->action->id =='report/SaleDailyBySaleRep'
+                    ),
                     array('label'=>Yii::t('app','User Log Summary'),'icon'=> 'menu-icon fa fa-caret-right', 'url'=>Yii::app()->urlManager->createUrl('report/UserLogSummary'),
                         'active'=>$this->id .'/'. $this->action->id =='report/UserLogSummary'
                     ),
