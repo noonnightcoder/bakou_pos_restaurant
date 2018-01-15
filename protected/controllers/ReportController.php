@@ -112,7 +112,7 @@ class ReportController extends Controller
         $grid_id = 'rpt-sale-daily-by-salerep-grid';
         $title = 'Close Register';
 
-        $data = $this->commonData($grid_id,$title);
+        $data = $this->commonData($grid_id,$title,null,'_header','_grid','show');
 
         $data['grid_columns'] = ReportColumn::getSaleDailyBySaleRepColumns();
         $data['data_provider'] = $data['report']->saleDailyBySaleRep();
@@ -589,7 +589,7 @@ class ReportController extends Controller
      * @param $grid_view
      * @return mixed
      */
-    protected function commonData($grid_id,$title,$advance_search=null,$header_view='_header',$grid_view='_grid')
+    protected function commonData($grid_id,$title,$advance_search=null,$header_view='_header',$grid_view='_grid',$employee_search=null)
     {
         $report = new Report;
 
@@ -598,7 +598,9 @@ class ReportController extends Controller
         $data['to_date'] = isset($_GET['Report']['to_date']) ? $_GET['Report']['to_date'] : date('d-m-Y');
         $data['search_id'] = isset($_GET['Report']['search_id']) ? $_GET['Report']['search_id'] : '';
         $data['location_id'] = isset($_GET['Report']['location_id']) ? $_GET['Report']['location_id'] : Common::getCurLocationID();
+        $data['employee_id'] = isset($_GET['Report']['employee_id']) ? $_GET['Report']['employee_id'] : Common::getEmployeeID();
         $data['advance_search'] = $advance_search;
+        $data['employee_search'] = $employee_search;
         $data['header_tab'] = '';
 
         $data['grid_id'] = $grid_id;
@@ -611,6 +613,7 @@ class ReportController extends Controller
         $data['report']->to_date = $data['to_date'];
         $data['report']->search_id = $data['search_id'];
         $data['report']->location_id = $data['location_id'];
+        $data['report']->employee_id = $data['employee_id'];
 
         return $data;
     }

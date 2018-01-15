@@ -4,11 +4,12 @@
             <div class="widget-header widget-header-flat">
                 <h5 class="widget-title bigger lighter">
                     <i class="ace-icon fa fa-bar-chart-o"></i>
-                    <?php echo Yii::t('app','Daily Sale\'s Chart'); ?>
+                    <?php echo Yii::t('app','Daily Sale\'s Chart' ); ?>
                 </h5>
                 <div class="widget-toolbar">
                     <a href="#" data-action="collapse">
                         <i class="ace-icon fa fa-chevron-up"></i>
+
                     </a>
                 </div>
             </div>

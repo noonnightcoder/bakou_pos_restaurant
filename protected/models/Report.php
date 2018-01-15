@@ -209,24 +209,27 @@ class Report extends CFormModel
     public function saleItemSummary()
     {
 
-        $sql = "SELECT i.name item_name,CONCAT_WS(' - ',:from_date, :to_date) date_report,sub_total,t1.quantity
-            FROM (
-            SELECT sm.item_id,
-                   -- MIN(DATE_FORMAT(s.sale_time,'%d-%m-%Y')) from_date, MAX(DATE_FORMAT(s.sale_time,'%d-%m-%Y')) to_date,
-                   SUM(sm.quantity) quantity,SUM(sm.price*quantity) sub_total
-            FROM v_sale s , sale_item sm
-            WHERE s.id=sm.sale_id
-            AND s.location_id=sm.location_id
-            AND s.sale_time>=str_to_date(:from_date,'%d-%m-%Y')  
-            AND s.sale_time<date_add(str_to_date(:to_date,'%d-%m-%Y'),INTERVAL 1 DAY) 
-            AND s.status=:status
-            GROUP BY sm.item_id
-            ) t1 JOIN item i ON i.id=t1.item_id";
+        $sql = "SELECT i.name item_name,CONCAT_WS(' - ',:from_date, :to_date) date_report,
+                  sub_total,t1.quantity,location_name_kh
+                FROM (
+                SELECT sm.item_id,s.location_name_kh,
+                       -- MIN(DATE_FORMAT(s.sale_time,'%d-%m-%Y')) from_date, MAX(DATE_FORMAT(s.sale_time,'%d-%m-%Y')) to_date,
+                       SUM(sm.quantity) quantity,SUM(sm.price*quantity) sub_total
+                FROM v_sale_meta s , sale_item sm
+                WHERE s.sale_id=sm.sale_id
+                AND s.location_id = sm.location_id
+                AND s.location_id = :location_id
+                AND s.sale_time>=str_to_date(:from_date,'%d-%m-%Y')  
+                AND s.sale_time<date_add(str_to_date(:to_date,'%d-%m-%Y'),INTERVAL 1 DAY) 
+                AND s.status=:status
+                GROUP BY sm.item_id,s.location_name_kh
+                ) t1 JOIN item i ON i.id=t1.item_id";
 
         $rawData = Yii::app()->db->createCommand($sql)->queryAll(true, array(
             ':from_date' => $this->from_date,
             ':to_date' => $this->to_date,
-            ':status' => Yii::app()->params['sale_complete_status']
+            ':status' => Yii::app()->params['sale_complete_status'],
+            ':location_id' => $this->location_id
         ));
 
         $dataProvider = new CArrayDataProvider($rawData, array(
@@ -254,7 +257,9 @@ class Report extends CFormModel
                        SUM(quantity*price)- SUM(quantity*price*discount_amount_total/100) total
                   FROM v_sale_cart vs LEFT JOIN category c ON c.id=vs.category_id
                   WHERE location_id=:location_id
-                  AND DATE(sale_time)= CURDATE()
+                  -- AND DATE(sale_time)= '2017-12-01'
+                  AND vs.sale_time>=str_to_date(:from_date,'%d-%m-%Y')  
+                  AND vs.sale_time<date_add(str_to_date(:to_date,'%d-%m-%Y'),INTERVAL 1 DAY) 
                   AND updated_by=:employee_id
                   AND `status`=:status
                   AND ISNULL(deleted_at)
@@ -264,8 +269,10 @@ class Report extends CFormModel
 
         $rawData = Yii::app()->db->createCommand($sql)->queryAll(true, array(
             ':location_id' => $this->location_id,
+            ':from_date' => $this->from_date,
+            ':to_date' => $this->to_date,
             ':status' => Yii::app()->params['sale_complete_status'],
-            ':employee_id' => Common::getEmployeeID()
+            ':employee_id' => $this->employee_id
         ));
 
         $dataProvider = new CArrayDataProvider($rawData, array(

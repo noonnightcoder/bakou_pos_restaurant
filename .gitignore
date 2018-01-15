@@ -7,3 +7,5 @@
 /.idea/
 /.idea/workspace.xml
 /framework/
+
+protected/config/main.php

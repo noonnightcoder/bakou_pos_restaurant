@@ -243,5 +243,17 @@ class Employee extends CActiveRecord
 
         return isset($model) ? $model : null;
     }
+
+    protected function getEmployeeInfo()
+    {
+        return $this->first_name . '  ' . $this->last_name;
+    }
+
+    public function getEmployee()
+    {
+        $model = Employee::model()->findAll();
+        $list = CHtml::listData($model, 'id', 'EmployeeInfo');
+        return $list;
+    }
         
 }

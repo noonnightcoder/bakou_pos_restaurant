@@ -22,6 +22,16 @@
         </div>
 
 
+        <?php if ($employee_search!==null) { ?>
+        <div class="input-group">
+            <?php echo TbHtml::activeDropDownList($report,'employee_id',Employee::model()->getEmployee(),
+                array('empty' => 'All Employee',
+                    'options'=>array(Common::getEmployeeID()=>array('selected'=>true))
+                ));
+            ?>
+        </div>
+        <?php } ?>
+
         <?php //echo $form->dropDownList($report,'sale_id', Category::model()->getCategory(),array('class'=>'col-xs-10 col-sm-8','prompt'=>'-- All --')); ?>
 
 
