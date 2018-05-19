@@ -44,7 +44,7 @@ class Giftcard extends CActiveRecord
 		return array(
 			array('giftcard_number, discount_amount', 'required'),
             array('giftcard_number', 'unique'),
-			array('client_id', 'numerical', 'integerOnly'=>true),
+			array('client_id, location_id', 'numerical', 'integerOnly'=>true),
 			array('giftcard_number', 'length', 'max'=>60),
 			array('discount_amount', 'length', 'max'=>15),
 			array('discount_type', 'length', 'max'=>2),
@@ -67,6 +67,7 @@ class Giftcard extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'client' => array(self::BELONGS_TO, 'Client', 'client_id'),
+			'location' => array(self::BELONGS_TO, 'Location', 'location_id'),
 		);
 	}
 
@@ -116,6 +117,7 @@ class Giftcard extends CActiveRecord
                 ':search' => '%' . $this->giftcard_number . '%',
             );
         } else {
+            //$criteria->join = 'LEFT JOIN Location ON Location.id = Giftcard.location_id';
             $criteria->condition = 'status=:active_status AND (giftcard_number LIKE :search OR discount_amount like :search)';
             $criteria->params = array(
                 ':active_status' => Yii::app()->params['active_status'],

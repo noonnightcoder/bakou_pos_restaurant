@@ -20,10 +20,6 @@ class ReportColumn extends CModel
         );
     }
 
-    /**
-     * Helper function to get example grid columns
-     * @return array
-     */
     public static function getSaleInvoiceColumns()
     {
         return array(
@@ -32,7 +28,7 @@ class ReportColumn extends CModel
                 //'value' => '$data["sale_id"]',
                 'value' => '$data["deleted_at"]==NULL ? $data["sale_id"] : "<s class=\"orange\">" .  $data["sale_id"] ',
                 'class' => 'yiiwheels.widgets.grid.WhRelationalColumn',
-                'url' => Yii::app()->createUrl('Report/saleInvoiceDetail'),
+                'url' => Yii::app()->createUrl("Report/saleInvoiceDetail"),
                 'type' => 'raw'
             ),
             array('name' => 'sale_time',
@@ -218,6 +214,12 @@ class ReportColumn extends CModel
 
     public static function getSaleItemSummaryColumns() {
         return array(
+            array('name'=>'item_number',
+                'header'=>Yii::t('app','Item Code'),
+                'value'=>'$data["item_number"]',
+                'headerHtmlOptions'=>array('style' => 'text-align: right;'),
+                'htmlOptions'=>array('style' => 'text-align: right;'),
+            ),
             array('name'=>'item_name',
                 'header'=>Yii::t('app','Item Name'),
                 'value'=>'$data["item_name"]',

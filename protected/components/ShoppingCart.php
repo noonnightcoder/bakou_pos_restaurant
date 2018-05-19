@@ -550,6 +550,28 @@ class ShoppingCart extends CApplicationComponent
         }
     }
 
+
+    public function getRptLocation()
+    {
+        $this->setSession(Yii::app()->session);
+        if (!isset($this->session['rpt_location'])) {
+            $this->setRptLocation(Common::getCurLocationID());
+        }
+        return $this->session['rpt_location'];
+    }
+
+    public function setRptLocation($data)
+    {
+        $this->setSession(Yii::app()->session);
+        $this->session['rpt_location'] = $data;
+    }
+
+    public function removeRptLocation()
+    {
+        $this->setSession(Yii::app()->session);
+        unset($this->session['rpt_location']);
+    }
+
     public function clearAll()
     {
         $this->emptyCart();

@@ -73,13 +73,15 @@ $this->breadcrumbs = array(
                 //'id',
                 'giftcard_number',
                 'discount_amount',
+                'start_date',
+                'end_date',
                 //'discount_type',
                 //'status',
-                'client_id',
+                'name' => 'name',
                 array(
                     'class' => 'bootstrap.widgets.TbButtonColumn',
-                    'template' => '<div class="hidden-sm hidden-xs btn-group">{view}{update}{delete}{restore}</div>',
-                    'htmlOptions' => array('class' => 'nowrap'),
+                    'template' => '<div class="btn-group">{view}{update}{delete}{restore}</div>',
+                    //'htmlOptions' => array('class' => 'nowrap'),
                     'buttons' => array(
                         'view' => array(
                             'click' => 'updateDialogOpen',

@@ -63,8 +63,10 @@
                 </div>
 
             </div>
-    
-            <?php echo $form->dropDownListControlGroup($model,'client_id', Client::model()->getCustomer(),array('prompt'=>'No Customer')); ?>
+
+            <?php echo $form->dropDownListControlGroup($model,'location_id', Location::model()->getLocation()); ?>
+
+            <?php /*echo $form->dropDownListControlGroup($model,'client_id', Client::model()->getCustomer(),array('prompt'=>'No Customer')); */?>
 
         <div class="form-actions">
         <?php echo TbHtml::submitButton($model->isNewRecord ? 'Create' : 'Save',array(

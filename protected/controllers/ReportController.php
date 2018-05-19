@@ -36,7 +36,7 @@ class ReportController extends Controller
                     'SaleInvoice', 'SaleInvoiceAlert', 'SaleDaily', 'SaleReportTab', 'SaleSummary',
                     'Payment', 'TopProduct', 'SaleHourly', 'Inventory', 'ItemExpiry', 'DailyProfit',
                     'ItemInactive', 'Transaction', 'TransactionItem', 'ItemAsset', 'SaleItemSummary',
-                    'UserLogSummary', 'SaleInvoiceDetail','SaleDailyBySaleRep'
+                    'UserLogSummary', 'SaleInvoiceDetail','SaleDailyBySaleRep','SetLocation'
                 ),
                 'users' => array('@'),
             ),
@@ -61,6 +61,8 @@ class ReportController extends Controller
 
         $data['grid_columns'] = ReportColumn::getSaleInvoiceColumns();
         $data['data_provider'] = $data['report']->saleInvoice();
+
+        $this->setLocation($data['report']->location_id);
 
         $this->renderView($data);
 
@@ -127,7 +129,7 @@ class ReportController extends Controller
         $grid_id = 'rpt-sale-item-summary-grid';
         $title = 'Sale Item Summary';
 
-        $data = $this->commonData($grid_id,$title);
+        $data = $this->commonData($grid_id,$title,'show','_header');
 
         $data['grid_columns'] = ReportColumn::getSaleItemSummaryColumns();
         $data['data_provider'] = $data['report']->saleItemSummary();
@@ -550,13 +552,11 @@ class ReportController extends Controller
         }
     }
 
+    protected function setLocation($location_id)
+    {
+        Yii::app()->shoppingCart->setRptLocation($location_id);
+    }
 
-
-    /**
-     * @param $data
-     * @param $view_name
-     * @throws CException
-     */
     protected function renderView($data, $view_name='index')
     {
         if (Yii::app()->request->isAjaxRequest && !isset($_GET['ajax']) ) {

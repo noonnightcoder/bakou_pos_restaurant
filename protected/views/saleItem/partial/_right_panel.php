@@ -147,6 +147,16 @@
                     )); ?>
                 </div>
 
+
+                <div class="widget-container-col">
+                    <?php $this->renderPartial('partial/_right_menu_sub', array(
+                            'form' => $form,
+                            'items' => $items,
+                            'model' => $model,
+                        ))
+                    ?>
+                </div>
+
                 <div class="row">
                     <div class="col-sm-5 pull-right">
                         <h4 class="pull-right">

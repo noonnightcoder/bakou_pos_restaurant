@@ -175,6 +175,11 @@ Class Common
     {
         return Yii::app()->session['employeeid'];
     }
+
+    public static function getSelLocationID()
+    {
+        return Yii::app()->shoppingCart->getRptLocation();
+    }
     
 }
 

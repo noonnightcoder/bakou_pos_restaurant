@@ -76,3 +76,42 @@
         }
     });
 </script>
+
+<script>
+    jQuery( function($){
+        $('div#report_header').on('change','#Report_location_id',function(e) {
+            e.preventDefault();
+            var data=$("#report-form").serialize();
+            $.ajax({url: '<?=  Yii::app()->createUrl($this->route); ?>',
+                type : 'GET',
+                data:data,
+                beforeSend: function() { $('.waiting').show(); },
+                complete: function() { $('.waiting').hide(); },
+                success : function(data) {
+                    $("#report_grid").html(data);
+                    return false;
+                }
+            });
+        });
+    });
+</script>
+
+<!--<script>
+    jQuery( function($){
+        $('div#report_header').on('change','#Report_location_id',function(e) {
+            e.preventDefault();
+            var data=$("#report-form").serialize();
+            $.ajax({url: 'SetLocation',
+                data : data,
+                type : 'GET',
+                beforeSend: function() { $('.waiting').show(); },
+                complete: function() { $('.waiting').hide(); },
+                success : function(data) {
+                    $("#report_grid").html(data);
+                }
+            });
+        });
+    });
+</script>-->
+
+

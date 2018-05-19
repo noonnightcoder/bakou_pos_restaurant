@@ -31,7 +31,7 @@ class DashboardController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','AjaxRefresh'),
+				'actions'=>array('create','update','AjaxRefresh','ViewTify'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -63,6 +63,13 @@ class DashboardController extends Controller
 		$report=new Dashboard;
 		$this->renderPartial('_index_ajax',array('report'=>$report));
 	}
+
+	public function actionViewTify()
+    {
+
+        $this->layout='vuetify';
+        $this->render('vuetify');
+    }
 
 	
 }

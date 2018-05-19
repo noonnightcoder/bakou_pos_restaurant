@@ -11,12 +11,26 @@ class SaleItemController extends Controller
     {
         return array(
             'accessControl', // perform access control for CRUD operations
+            array(
+                'ext.starship.RestfullYii.filters.ERestFilter + 
+                REST.GET, REST.PUT, REST.POST, REST.DELETE'
+            ),
+        );
+    }
+
+    public function actions()
+    {
+        return array(
+            'REST.'=>'ext.starship.RestfullYii.actions.ERestActionProvider',
         );
     }
 
     public function accessRules()
     {
         return array(
+            array('allow', 'actions'=>array('REST.GET', 'REST.PUT', 'REST.POST', 'REST.DELETE'),
+                'users'=>array('*'),
+            ),
             array('allow', // allow all users to perform 'index' and 'view' actions
                 'actions' => array('view'),
                 'users' => array('@'),
@@ -716,4 +730,10 @@ class SaleItemController extends Controller
         return $data;
     }
 
+    public function restEvents()
+    {
+        $this->onRest('req.get.special.render', function($param1) {
+            echo CJSON::encode(['param1'=>$param1]);
+        });
+    }
 }
