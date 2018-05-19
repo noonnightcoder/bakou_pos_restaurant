@@ -1,5 +1,5 @@
 <!-- #section:right.panel.layout -->
-<div class="col-xs-12 col-sm-8 widget-container-col">
+<div class="col-xs-12 col-sm-7 widget-container-col">
 
     <?php //$this->renderPartial('//layouts/alert/_gritter'); ?>
     <?php $this->renderPartial('//layouts/alert/_flash'); ?>
@@ -10,6 +10,7 @@
             <h5 class="widget-title"><?= Yii::t('app','Ordering Cart'); ?></h5>
 
             <div class="widget-toolbar">
+
 
                 <?php echo TbHtml::linkButton(Yii::t('app', 'Close Register'), array(
                     'color' => TbHtml::BUTTON_COLOR_DEFAULT,
@@ -133,8 +134,8 @@
 
                 <br>
 
-                <!--<div class="row">
-                    <?php /*$this->renderPartial('partial/_right_menu', array(
+                <div class="row">
+                    <?php $this->renderPartial('partial/_right_menu', array(
                         'model' => $model,
                         'table_info' => $table_info,
                         'items' => $items,
@@ -143,11 +144,11 @@
                         'count_payment' => $count_payment,
                         'count_item' => $count_item,
                         'form' => $form,
-                    )); */?>
-                </div>-->
+                    )); ?>
+                </div>
 
 
-                <div class="row">
+                <div class="widget-container-col">
                     <?php $this->renderPartial('partial/_right_menu_sub', array(
                             'form' => $form,
                             'items' => $items,

@@ -1,5 +1,5 @@
 <!-- #section:left.div.layout -->
-<div class="col-xs-12 col-sm-4 widget-container-col" id="grid_zone">
+<div class="col-xs-12 col-sm-5 widget-container-col" id="grid_zone">
     <div class="widget-box">
         <div class="widget-header widget-header-flat widget-header-small">
             <i class="ace-icon fa fa-globe"></i>
