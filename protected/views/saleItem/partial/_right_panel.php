@@ -156,6 +156,14 @@
                     ?>
                 </div>
 
+                <?php echo TbHtml::buttonDropdown('All Cart', array(
+                        array('label' => 'Summary Cart', 'url' => '#'),
+                        TbHtml::menuDivider(),
+                        array('label' => 'Cart 1', 'url' => '#'),
+                        array('label' => 'Cart 2', 'url' => '#'),
+                ), array('split' => true)); ?>
+
+
                 <div class="row">
                     <div class="col-sm-5 pull-right">
                         <h4 class="pull-right">

@@ -1,3 +1,12 @@
+<?php echo TbHtml::linkButton(Yii::t('app', 'NEW CART'), array(
+    'color' => TbHtml::BUTTON_COLOR_SUCCESS,
+    'size' => TbHtml::BUTTON_SIZE_SM,
+    //'icon' => 'glyphicon-heart white',
+    'url' => Yii::app()->createUrl('SaleItem/AddPayment/'),
+    'class' => 'add-payment',
+    'title' => Yii::t('app', 'Add Payment'),
+)); ?>
+
 <?php if (isset($table_info)) { ?>
     <span class="label label-info label-xlg">
         <?php echo '<b>' .  $table_info->name  .' - ' . Common::GroupAlias(Yii::app()->orderingCart->getGroupId()) . '</b>'; ?>

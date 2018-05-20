@@ -5,7 +5,6 @@
         <th><?php echo Yii::t('app', 'Item Name'); ?></th>
         <th><?php echo Yii::t('app', 'Price'); ?></th>
         <th><?php echo Yii::t('app', 'Quantity'); ?></th>
-        <!-- <th class="<?php //echo Yii::app()->settings->get('sale','discount'); ?>"><?php //echo Yii::t('model','model.saleitem.discount_amount'); ?></th> -->
         <th><?php echo Yii::t('app', 'Total'); ?></th>
         <th><?php echo Yii::t('app', 'Action'); ?></th>
     </tr>
@@ -63,9 +62,10 @@
 
                 <?php echo $form->textField($model, "quantity", array(
                     'value' => $item['quantity'],
-                    'class' => 'input-small input-grid alignRight',
+                    'class' => 'input-small input-grid alignRight readonly',
                     'id' => "quantity_$item_id",
                     'placeholder' => 'Quantity',
+                    //'disabled' => true,
                     'data-id' => "$item_id",
                     'data-parentid' => "$item_parent_id",
                     'maxlength' => 10
@@ -95,7 +95,6 @@
                 )); ?>
             </td>
         </tr>
-        <?php //$this->endWidget(); ?>  <!--/endformWidget-->
-    <?php endforeach; ?> <!--/endforeach-->
+    <?php endforeach; ?>
     </tbody>
 </table>

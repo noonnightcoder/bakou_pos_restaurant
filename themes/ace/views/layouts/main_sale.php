@@ -18,12 +18,11 @@
     <link rel="icon" type="image/ico" href="<?php echo $baseUrl ?>/css/img/bakouicon.ico" />
     
     <!-- bootstrap & fontawesome -->
-    <!-- <link rel="stylesheet" type="text/css" href="<?php //echo $baseUrl ?>/css/bootstrap.min.css" /> -->
+    <!--<link rel="stylesheet" type="text/css" href="<?/*= $baseUrl */?>/css/bootstrap.min.css" />-->
     <link rel="stylesheet" type="text/css" href="<?php echo $baseUrl ?>/css/font-awesome.min.css" />
     
     <!-- page specific plugin styles -->
-    <link rel="stylesheet" type="text/css" href="<?php echo $baseUrl ?>/css/colorbox.css" />
-    
+
     <!-- text fonts -->
     <link rel="stylesheet" type="text/css" href="<?php echo $baseUrl ?>/css/ace-fonts.css" />
     
@@ -41,7 +40,7 @@
         <link rel="stylesheet" type="text/css" href="<?php echo $baseUrl ?>/css/ace-ie.min.css" />
     <![endif]-->
     
-    <link rel="stylesheet" type="text/css" href="<?php echo $baseUrl ?>/css/jquery-ui-1.10.4.custom.min.css" />
+   <!-- <link rel="stylesheet" type="text/css" href="<?php /*echo $baseUrl */?>/css/jquery-ui-1.10.4.custom.min.css" />-->
     <link rel="stylesheet" type="text/css" href="<?php echo $baseUrl ?>/css/loading_animation.css" />
     <link rel="stylesheet" type="text/css" href="<?php echo $baseUrl ?>/css/select2.css" />
     
