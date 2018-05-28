@@ -238,7 +238,7 @@ class ShoppingCart extends CApplicationComponent
     {
         $this->setSession(Yii::app()->session);
         if (!isset($this->session['tableid'])) {
-            $this->setTableId(null);
+            $this->setTableId('69');
         }
         return $this->session['tableid'];
     }

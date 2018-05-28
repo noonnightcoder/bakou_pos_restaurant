@@ -2,16 +2,8 @@
 
 class ReportController extends Controller
 {
-
-    /**
-     * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
-     * using two-column layout. See 'protected/views/layouts/column2.php'.
-     */
     public $layout = '//layouts/column1';
 
-    /**
-     * @return array action filters
-     */
     public function filters()
     {
         return array(
@@ -19,11 +11,6 @@ class ReportController extends Controller
         );
     }
 
-    /**
-     * Specifies the access control rules.
-     * This method is used by the 'accessControl' filter.
-     * @return array access control rules
-     */
     public function accessRules()
     {
         return array(
@@ -36,7 +23,7 @@ class ReportController extends Controller
                     'SaleInvoice', 'SaleInvoiceAlert', 'SaleDaily', 'SaleReportTab', 'SaleSummary',
                     'Payment', 'TopProduct', 'SaleHourly', 'Inventory', 'ItemExpiry', 'DailyProfit',
                     'ItemInactive', 'Transaction', 'TransactionItem', 'ItemAsset', 'SaleItemSummary',
-                    'UserLogSummary', 'SaleInvoiceDetail','SaleDailyBySaleRep','SetLocation'
+                    'UserLogSummary', 'SaleInvoiceDetail','SaleDailyBySaleRep','SetLocation','PrintCloseSale'
                 ),
                 'users' => array('@'),
             ),
@@ -120,6 +107,32 @@ class ReportController extends Controller
         $data['data_provider'] = $data['report']->saleDailyBySaleRep();
 
         $this->renderView($data);
+    }
+
+    public function actionPrintCloseSale()
+    {
+        $this->layout = '//layouts/column_receipt';
+
+        $grid_id = 'rpt-sale-daily-by-salerep-grid';
+        $title = 'Close Register';
+        $data = $this->commonData($grid_id,$title,null,'_header','_grid','show');
+        $data['items'] =  $data['report']->saleDailyBySaleRep();
+        $data['transaction_date'] = date('d-M-Y');
+
+        if ($data['employee_id']) {
+            $employee = Employee::model()->findByPk($data['employee_id']);
+            $data['employee'] = $employee->first_name . ' ' . $employee->last_name;
+        }
+
+        if (count($data['items']) == 0) {
+            $data['warning'] = Yii::t('app','There is no sale transaction today.');
+            Yii::app()->user->setFlash('warning', Yii::t('app', "There is no sale transaction today."));
+            $this->reload($data);
+        } else {
+            Yii::app()->session->close();
+            $this->render('partial/_receipt_close_sale', $data);
+        }
+
     }
 
     public function actionSaleItemSummary()

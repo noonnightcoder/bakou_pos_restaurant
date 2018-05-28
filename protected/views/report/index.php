@@ -15,6 +15,7 @@
     'advance_search' => $advance_search,
     'employee_search' => $employee_search,
     'header_tab' => $header_tab, // Using for tab style
+    'print_button' => '',
 )); ?>
 
 <br />

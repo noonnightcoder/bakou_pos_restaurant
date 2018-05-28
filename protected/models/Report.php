@@ -92,15 +92,28 @@ class Report extends CFormModel
                 )
             );
 
-        } else {
+        }elseif ($this->location_id==null)  {
+
 
             $sql = "SELECT sale_id,sale_time,employee_name,employee_id,client_id,location_name_kh,
                       0 quantity,sub_total,discount_amount,vat_amount,total,status,status_f,desk_name,deleted_at
                     FROM v_sale_meta
-                    WHERE location_id=:location_id
-                    AND sale_time>=str_to_date(:from_date,'%d-%m-%Y')
+                    WHERE sale_time>=str_to_date(:from_date,'%d-%m-%Y')
                     AND sale_time<=date_add(str_to_date(:to_date,'%d-%m-%Y'),INTERVAL 1 DAY)
                     ORDER BY sale_time desc";
+
+            $rawData = Yii::app()->db->createCommand($sql)->queryAll(true, array(
+                ':from_date' => $this->from_date,
+                ':to_date' => $this->to_date,
+            ));
+        } else {
+            $sql = "SELECT sale_id,sale_time,employee_name,employee_id,client_id,location_name_kh,
+                          0 quantity,sub_total,discount_amount,vat_amount,total,status,status_f,desk_name,deleted_at
+                        FROM v_sale_meta
+                        WHERE location_id=:location_id
+                        AND sale_time>=str_to_date(:from_date,'%d-%m-%Y')
+                        AND sale_time<=date_add(str_to_date(:to_date,'%d-%m-%Y'),INTERVAL 1 DAY)
+                        ORDER BY sale_time desc";
 
             $rawData = Yii::app()->db->createCommand($sql)->queryAll(true, array(
                 ':from_date' => $this->from_date,

@@ -146,15 +146,16 @@
                     )); */?>
                 </div>-->
 
-
-                <div class="row">
-                    <?php $this->renderPartial('partial/_right_menu_sub', array(
-                            'form' => $form,
-                            'items' => $items,
-                            'model' => $model,
-                        ))
-                    ?>
-                </div>
+                <?php if (Common::getTableID()!==null) {?>
+                    <div class="row">
+                        <?php $this->renderPartial('partial/_right_menu_sub', array(
+                                'form' => $form,
+                                'items' => $items,
+                                'model' => $model,
+                            ))
+                        ?>
+                    </div>
+                <?php } ?>
 
                 <?php echo TbHtml::buttonDropdown('All Cart', array(
                         array('label' => 'Summary Cart', 'url' => '#'),
